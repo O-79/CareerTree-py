@@ -1,5 +1,5 @@
 # Career Tree
-![Career Tree](https://github.com/O-79/CareerTree-py/blob/main/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
+![Career Tree](https://github.com/O-79/CareerTree-py/tree/master/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
 
 <h3>What Is It?</h3>
 
