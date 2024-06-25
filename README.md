@@ -61,4 +61,4 @@ ChatGPT's responses will be based on a selected *response size, X*, which is a c
   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄<br/>
 </details>
 
-![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_full_shadow_v1.1.png?raw=true)
+![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_full_borderless_shadow_v1.1.png?raw=true)
