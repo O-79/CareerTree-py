@@ -24,5 +24,20 @@
     <Compile Include="GPT.py" />
     <Compile Include="Manager.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\icon_base_black_v1.1.png" />
+    <Content Include="resources\icon_base_black_v1.png" />
+    <Content Include="resources\icon_base_v1.1.png" />
+    <Content Include="resources\icon_base_v1.png" />
+    <Content Include="resources\icon_base_v2.png" />
+    <Content Include="resources\icon_full_borderless_shadow_v1.1.png" />
+    <Content Include="resources\icon_full_borderless_shadow_v1.png" />
+    <Content Include="resources\icon_full_borderless_v1.png" />
+    <Content Include="resources\icon_full_v1.png" />
+    <Content Include="resources\icon_full_v2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
