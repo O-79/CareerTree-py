@@ -45,7 +45,13 @@ class Control:
         except ValueError:
             SEL = 1
 
-        SEL = max(1, min(X, SEL))
+        if SEL < 1:
+            SEL = 1
+        if SEL > X:
+            SEL = X
+        
+        print("<DEBUG>", end=' ')
+        print(SEL)
 
         XYZ_SEL = XYZ.split(',')[SEL - 1].strip()
 
@@ -63,7 +69,7 @@ class Control:
 
     @staticmethod
     def CMD_LOC(CAREER_TREE, X: int, MGR):
-        print(Control.Q_LOC)
+        print(Control.Q_LOC, end='')
         if MGR.GET_LOC() is not None:
             print(" (resets tree)")
         else:
@@ -139,7 +145,7 @@ class Control:
 
         Control.TMP = X
 
-        print(Control.MENU)
+        print(Control.MENU, end='')
 
         CMD = "loc"
         while CMD.lower() not in ["quit", "exit", "q"]:
@@ -160,7 +166,7 @@ class Control:
             if INF:
                 COLLEGE_INFO.append(INF)
 
-            print("\n> ", end="")
+            print("\n>", end=" ")
             CMD = input()
 
         print(f"\n{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")

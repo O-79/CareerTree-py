@@ -92,7 +92,7 @@ class Manager:
         self.LOC = LOC
 
     def GET_CAR_GPT(self):
-        self.CAR = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} careers in {self.LOC} as a comma-delimited list")
+        self.CAR = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} careers in {self.LOC} WITHOUT NUMBERED LIST AND IN THE FORMAT: name1,name2,name3,etc")
         return self.CAR
 
     def GET_CAR(self):
@@ -102,7 +102,7 @@ class Manager:
         self.CAR = CAR
 
     def GET_JOB_GPT(self):
-        self.JOB = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} jobs for {self.CAR} as a comma-delimited list")
+        self.JOB = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} jobs for {self.CAR} WITHOUT NUMBERED LIST AND IN THE FORMAT: name1,name2,name3,etc")
         return self.JOB
 
     def GET_JOB(self):
@@ -112,7 +112,7 @@ class Manager:
         self.JOB = JOB
 
     def GET_COL_GPT(self):
-        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} colleges for a {self.JOB} job as a comma-delimited list")
+        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} colleges for a {self.JOB} job WITHOUT NUMBERED LIST AND IN THE FORMAT: name1,name2,name3,etc")
         return self.COL
 
     def GET_COL(self):
@@ -122,7 +122,7 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        self.PAY = GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: return the average annual pay for a {self.JOB} job in {self.LOC}")
+        self.PAY = GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER WITHOUT '$' or ',': return the average annual pay for a {self.JOB} job in {self.LOC}")
         return self.PAY
 
     def GET_DEG_GPT(self):
@@ -141,15 +141,15 @@ class Manager:
         INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.LOC} in the same state as {self.COL}").lower() == 'y'
 
         if INS:
-            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: state the in-state tuition at {self.COL} for a {self.DEG} degree"))
+            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER WITHOUT '$' or ',': state the in-state tuition at {self.COL} for a {self.DEG} degree"))
         else:
-            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: state the out-of-state tuition at {self.COL} for a {self.DEG} degree"))
+            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER WITHOUT '$' or ',': state the out-of-state tuition at {self.COL} for a {self.DEG} degree"))
         INF.TUT = TUT
 
-        LON = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: state the average loan taken at {self.COL}"))
+        LON = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER WITHOUT '$' or ',': state the average loan taken at {self.COL}"))
         INF.LON = LON
 
-        LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} loan repayment options as a comma-delimited list")
+        LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} loan repayment options WITHOUT NUMBERED LIST AND IN THE FORMAT: name1,name2,name3,etc")
         INF.LON_OPP = LON_OPP.split(",")
 
         MTH_PAY = float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: state the monthly payment for a ${LON} loan"))
