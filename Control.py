@@ -50,7 +50,6 @@ class Control:
         if SEL > X:
             SEL = X
         
-        print("<DEBUG>", end=' ')
         print(SEL)
 
         XYZ_SEL = XYZ.split(',')[SEL - 1].strip()
@@ -138,7 +137,10 @@ class Control:
         print(Control.Q_SIZ)
         try:
             X = int(input())
-            X = max(4, min(16, X))
+            if X < 4:
+                X = 4
+            if X > 16:
+                X = 16
             MGR.INIT(X)
         except ValueError:
             MGR.INIT(X)

@@ -59,9 +59,3 @@ class GPT:
             
         except requests.exceptions.RequestException as e:
             raise RuntimeError(e)
-
-    # @staticmethod
-    # def EXT(ANS):
-    #     start_idx = ANS.find("content") + 11
-    #     end_idx = ANS.find("\"", start_idx)
-    #     return ANS[start_idx:end_idx]
