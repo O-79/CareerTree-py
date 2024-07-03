@@ -42,10 +42,12 @@ class GPT:
                 "Content-Type": "application/json"
             }
 
-            temperature = 0.2
+            temperature = 0.1
+            top_p = 0.1
             body = json.dumps({
                 "model": model,
                 "temperature": temperature,
+                "top_p": top_p,
                 "messages": [{"role": "user", "content": MSG}]
             })
 

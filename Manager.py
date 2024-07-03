@@ -1,5 +1,5 @@
-from re import S
 from GPT import GPT
+import re
 
 class College_Info:
     def __init__(self):
@@ -8,10 +8,10 @@ class College_Info:
         self.JOB = None
         self.COL = None
         self.DEG = None
-        self.TUT = 0
-        self.LON = 0
-        self.LON_OPP = []
-        self.MTH_PAY = 0.0
+        self.TUT = None
+        self.LON = None
+        self.MTH_PAY = None
+        self.LON_OPP = None
 
     def GET_LOC(self):
         return self.LOC
@@ -53,16 +53,19 @@ class College_Info:
         return self.LON
 
     def SET_LON(self, LON):
-        self.LON = LON
-
-    def GET_LON_OPP(self):
-        return self.GET_LON_OPP
-
-    def SET_LON_OPP(self, LON_OPP):
-        self.LON_OPP = LON_OPP    
+        self.LON = LON   
 
     def GET_MTH_PAY(self):
-        return self.MTH_PAY
+        return int(self.LON / self.MTH_PAY)
+    
+    def SET_MTH_PAY(self, MTH_PAY):
+        self.MTH_PAY = MTH_PAY
+
+    def GET_LON_OPP(self):
+        return self.LON_OPP
+
+    def SET_LON_OPP(self, LON_OPP):
+        self.LON_OPP = LON_OPP
 
 class Manager:
     def __init__(self):
@@ -72,15 +75,17 @@ class Manager:
         self.COL = None
         self.DEG = None
         self.PAY = None
+        self.INS = 1
         self.X = 0
 
-    def INIT(self, X):
+    def INIT(self, X, INS):
         self.LOC = None
         self.CAR = None
         self.JOB = None
         self.COL = None
         self.DEG = None
         self.PAY = None
+        self.INS = INS
         self.X = X
 
     def GET_LOC(self):
@@ -90,7 +95,7 @@ class Manager:
         self.LOC = LOC
 
     def GET_CAR_GPT(self):
-        self.CAR = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} careers in {self.LOC} AS A COMMA-DELIMITED LIST WITHOUT NUMBERING")
+        self.CAR = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} careers in {self.LOC} AS A '|' SEPARATED LIST")
         return self.CAR
 
     def GET_CAR(self):
@@ -100,7 +105,7 @@ class Manager:
         self.CAR = CAR
 
     def GET_JOB_GPT(self):
-        self.JOB = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} jobs for {self.CAR} AS A COMMA-DELIMITED LIST WITHOUT NUMBERING")
+        self.JOB = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} jobs for {self.CAR} AS A '|' SEPARATED LIST")
         return self.JOB
 
     def GET_JOB(self):
@@ -110,7 +115,10 @@ class Manager:
         self.JOB = JOB
 
     def GET_COL_GPT(self):
-        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} colleges for a {self.JOB} job AS A COMMA-DELIMITED LIST WITHOUT NUMBERING")
+        ADD = ""
+        if self.INS == 1:
+            ADD = " within " + self.LOC
+        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronyms) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST")
         return self.COL
 
     def GET_COL(self):
@@ -120,37 +128,38 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        self.PAY = GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE INTEGER WITH NO FORMATTING: return the average annual pay for a {self.JOB} job in {self.LOC}")
+        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC}").replace('$', '').replace(',', '')))
         return self.PAY
 
     def GET_DEG_GPT(self):
-        self.DEG = GPT.GET_ANS_TEST_DEG(f"NO EXTRA DESCRIPTION: state the degree needed to get a job as a {self.JOB}")
+        self.DEG = GPT.GET_ANS_TEST_DEG(f"just state the name of the degree needed to get a job as a {self.JOB}, nothing else")
         return self.DEG
 
     def GET_COL_INF_GPT(self):
         INF = College_Info()
+        
+        INF.SET_LOC(self.LOC)
+        INF.SET_CAR(self.CAR)
+        INF.SET_JOB(self.JOB)
+        INF.SET_COL(self.COL)
+        INF.SET_DEG(self.DEG)
 
-        INF.LOC = self.LOC
-        INF.CAR = self.CAR
-        INF.JOB = self.JOB
-        INF.COL = self.COL
-        INF.DEG = self.DEG
-
-        INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.LOC} in the same state as {self.COL}").lower() == 'y'
+        INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
 
         if INS:
-            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE INTEGER WITH NO FORMATTING: state the in-state tuition at {self.COL} for a {self.DEG} degree"))
+            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the in-state tuition only at {self.COL} for a {self.DEG} degree").replace('$', '').replace(',', '')))
         else:
-            TUT = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE INTEGER WITH NO FORMATTING: state the out-of-state tuition at {self.COL} for a {self.DEG} degree"))
-        INF.TUT = TUT
+            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the out-of-state tuition only at {self.COL} for a {self.DEG} degree").replace('$', '').replace(',', '')))
+        INF.SET_TUT(TUT)
 
-        LON = int(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE INTEGER WITH NO FORMATTING: state the average loan taken at {self.COL}"))
-        INF.LON = LON
+        LON = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the average student loan taken at {self.COL}").replace('$', '').replace(',', '')))
+        INF.SET_LON(LON)
 
-        LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list the top {self.X} loan repayment options AS A COMMA-DELIMITED LIST WITHOUT NUMBERING")
-        INF.LON_OPP = LON_OPP.split(",")
+        MTH_PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the monthly payment for a ${LON} loan").replace('$', '').replace(',', '')))
+        INF.SET_MTH_PAY(MTH_PAY)
 
-        MTH_PAY = float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, SIMPLE NUMBER ONLY: state the monthly payment for a ${LON} loan"))
-        INF.MTH_PAY = MTH_PAY
+        LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} loan repayment options AS A '|' SEPARATED LIST")
+        LON_OPP = re.sub(r'[0-9]+', '', LON_OPP).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
+        INF.SET_LON_OPP(LON_OPP)
 
         return INF

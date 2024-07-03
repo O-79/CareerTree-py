@@ -1,6 +1,7 @@
 from typing import List
 from CTree import CTree
-from Manager import Manager  # Assuming MGR is another module/class
+from Manager import Manager
+import re
 
 class Control:
     MENU = "\nWELCOME-TO-THE-CAREER-TREE------\n" \
@@ -14,6 +15,8 @@ class Control:
            + "----\"(Q)UIT\":--QUIT-------------\n\n"
 
     Q_SIZ = "* Size of responses ? (4 [Faster] - 16 [Slower])"
+    
+    Q_INS = "* In-state colleges only? (0 [No] / 1 [Yes])"
 
     Q_LOC = "* Enter your current / desired location"
 
@@ -37,6 +40,10 @@ class Control:
             XYZ = MGR.GET_JOB_GPT()
         elif TYP == "COL":
             XYZ = MGR.GET_COL_GPT()
+        
+        XYZ = re.sub(r'[0-9]+', '', XYZ).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
+        
+        X = XYZ.count('|') + 1
 
         print(f"* Choose (1 - {X}):\n{XYZ}")
         try:
@@ -49,9 +56,7 @@ class Control:
         if SEL > X:
             SEL = X
         
-        print(SEL)
-
-        XYZ_SEL = XYZ.split(',')[SEL - 1].strip()
+        XYZ_SEL = XYZ.split('|')[SEL - 1].strip()
 
         if TYP == "CAR":
             MGR.SET_CAR(XYZ_SEL)
@@ -128,11 +133,11 @@ class Control:
 
     @staticmethod
     def main():
-        MGR = Manager();
+        MGR = Manager()
         CAREER_TREE = CTree()
         COLLEGE_INFO: List[Manager.College_Info] = []
 
-        X = 10
+        X = 0
         print(Control.Q_SIZ)
         try:
             X = int(input())
@@ -140,11 +145,19 @@ class Control:
                 X = 4
             if X > 16:
                 X = 16
-            MGR.INIT(X)
         except ValueError:
-            MGR.INIT(X)
-
-        Control.TMP = X
+            X = 10
+        
+        INS = -1 # 0: OOS , 1:INS
+        print(Control.Q_INS)
+        try:
+            INS = int(input())
+            if INS != 0 and INS != 1:
+                INS = 1
+        except ValueError:
+            INS = 1
+        
+        MGR.INIT(X, INS)
 
         print(Control.MENU, end='')
 
@@ -181,10 +194,10 @@ class Control:
             print(f"DEGREE:     {I.GET_DEG()}")
             print(f"CAREER:     {I.GET_CAR()}")
             print(f"JOB:        {I.GET_JOB()}")
-            print(f"TUITION:    {I.GET_TUT()}")
-            print(f"LOAN:       {I.GET_LON()}")
-            print(f"PROGRAMS:   {I.GET_LON_OPP()}")
-            print(f"REPAY IN:   {I.GET_MTH_PAY()} months")
+            print(f"TUITION:    {I.GET_TUT()}") # include total expenses
+            print(f"LOAN:       {I.GET_LON()}") # WIP
+            print(f"REPAY IN:   {I.GET_MTH_PAY()} months") # WIP
+            # print(f"PROGRAMS:   {I.GET_LON_OPP()}") # WIP
             print(Control.DSH(''))
 
 if __name__ == "__main__":

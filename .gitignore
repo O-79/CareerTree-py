@@ -6,6 +6,10 @@
 # API key
 key.txt
 
+# Visual Studio
+*.sln
+*.pyproj
+
 # User-specific files
 *.rsuser
 *.suo
