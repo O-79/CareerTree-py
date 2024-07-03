@@ -3,7 +3,6 @@ from CTree import CTree
 from Manager import Manager  # Assuming MGR is another module/class
 
 class Control:
-
     MENU = "\nWELCOME-TO-THE-CAREER-TREE------\n" \
            + "USING:-gpt-turbo-3.5------------\n" \
            + "--CMD-MENU----------------------\n" \

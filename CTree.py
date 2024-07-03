@@ -1,5 +1,4 @@
 class CTree_Node:
-
     def __init__(self):
         self.ARR = []
         self.DAT = None
@@ -14,7 +13,6 @@ class CTree_Node:
         self.DAT = DAT
 
 class CTree:
-
     def __init__(self):
         self.ROT = CTree_Node()
         self.ROT.SET(None)

@@ -2,6 +2,9 @@ import requests
 import json
 
 class GPT:
+    with open('key.txt', 'r') as f:
+        KEY = f.read().strip()
+        f.close()
 
     @staticmethod
     def GET_ANS_TEST(MSG):
@@ -30,7 +33,7 @@ class GPT:
     @staticmethod
     def GET_ANS(MSG):
         url = "https://api.openai.com/v1/chat/completions"
-        api_key = ""
+        api_key = GPT.KEY
         model = "gpt-3.5-turbo"
 
         try:

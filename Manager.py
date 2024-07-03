@@ -2,7 +2,6 @@ from re import S
 from GPT import GPT
 
 class College_Info:
-
     def __init__(self):
         self.LOC = None
         self.CAR = None
@@ -66,7 +65,6 @@ class College_Info:
         return self.MTH_PAY
 
 class Manager:
-
     def __init__(self):
         self.LOC = None
         self.CAR = None
