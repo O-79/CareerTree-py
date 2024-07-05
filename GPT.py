@@ -2,7 +2,7 @@ import requests
 import json
 
 class GPT:
-    with open('key.txt', 'r') as f:
+    with open("key.txt", 'r') as f:
         KEY = f.read().strip()
         f.close()
 
@@ -59,10 +59,10 @@ class GPT:
             
             response_data = response.json()
             
-            choice = response_data['choices']
+            choice = response_data["choices"]
             within_choice = choice[0]
-            message = within_choice['message']
-            content = message['content']
+            message = within_choice["message"]
+            content = message["content"]
             return content.strip()
             
         except requests.exceptions.RequestException as e:

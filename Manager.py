@@ -128,7 +128,7 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
         return self.PAY
 
     def GET_DEG_GPT(self):
