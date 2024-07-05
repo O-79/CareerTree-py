@@ -148,7 +148,7 @@ class Control:
         except ValueError:
             X = 10
         
-        INS = -1 # 0: OOS , 1:INS
+        INS = -1 # 0: OOS , 1: INS
         print(Control.Q_INS)
         try:
             INS = int(input())
@@ -195,8 +195,8 @@ class Control:
             print(f"CAREER:     {I.GET_CAR()}")
             print(f"JOB:        {I.GET_JOB()}")
             print(f"TUITION:    {I.GET_TUT()}") # include total expenses
-            print(f"LOAN:       {I.GET_LON()}") # WIP
-            print(f"REPAY IN:   {I.GET_MTH_PAY()} months") # WIP
+            print(f"LOAN:       {I.GET_LON()} (avg.)") # WIP
+            print(f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)") # WIP
             # print(f"PROGRAMS:   {I.GET_LON_OPP()}") # WIP
             print(Control.DSH(''))
 

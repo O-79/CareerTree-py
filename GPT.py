@@ -42,8 +42,11 @@ class GPT:
                 "Content-Type": "application/json"
             }
 
+            ######### CONFIGURABLE #########
             temperature = 0.1
             top_p = 0.1
+            ################################
+            
             body = json.dumps({
                 "model": model,
                 "temperature": temperature,

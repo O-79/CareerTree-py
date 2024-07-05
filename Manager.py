@@ -118,7 +118,7 @@ class Manager:
         ADD = ""
         if self.INS == 1:
             ADD = " within " + self.LOC
-        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronyms) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST")
+        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} colleges (as short a name/acronym as possible) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS")
         return self.COL
 
     def GET_COL(self):
@@ -133,6 +133,14 @@ class Manager:
 
     def GET_DEG_GPT(self):
         self.DEG = GPT.GET_ANS_TEST_DEG(f"just state the name of the degree needed to get a job as a {self.JOB}, nothing else")
+        if "Associate" in self.DEG:
+            self.DEG = "Associate's degree"
+        if "Bachelor" in self.DEG:
+            self.DEG = "Bachelor's degree"
+        if "Master" in self.DEG:
+            self.DEG = "Master's degree"
+        if "High" in self.DEG or "high" in self.DEG:
+            self.DEG = "High school diploma"
         return self.DEG
 
     def GET_COL_INF_GPT(self):
