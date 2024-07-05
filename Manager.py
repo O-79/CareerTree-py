@@ -128,7 +128,7 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC}").replace('$', '').replace(',', '')))
+        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         return self.PAY
 
     def GET_DEG_GPT(self):
@@ -155,15 +155,15 @@ class Manager:
         INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
 
         if INS:
-            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the in-state tuition only at {self.COL} for a {self.DEG} degree").replace('$', '').replace(',', '')))
+            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the in-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         else:
-            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the out-of-state tuition only at {self.COL} for a {self.DEG} degree").replace('$', '').replace(',', '')))
+            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the out-of-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_TUT(TUT)
 
-        LON = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the average student loan taken at {self.COL}").replace('$', '').replace(',', '')))
+        LON = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the average student loan taken at {self.COL} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_LON(LON)
 
-        MTH_PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the monthly payment for a ${LON} loan").replace('$', '').replace(',', '')))
+        MTH_PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the monthly payment for a ${LON} loan in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_MTH_PAY(MTH_PAY)
 
         LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} loan repayment options AS A '|' SEPARATED LIST")
