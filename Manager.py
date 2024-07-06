@@ -139,6 +139,8 @@ class Manager:
             self.DEG = "Bachelor's degree"
         if "Master" in self.DEG:
             self.DEG = "Master's degree"
+        if "Doctor" in self.DEG:
+            self.DEG = "Doctoral degree"
         if "High" in self.DEG or "high" in self.DEG:
             self.DEG = "High school diploma"
         return self.DEG
