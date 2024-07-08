@@ -78,7 +78,7 @@ class Control:
         else:
             print()
 
-        LOC_ADD = input()
+        LOC_ADD = input().title()
         MGR.SET_LOC(LOC_ADD)
 
         CAR_ADD = Control.PARSE(Control.Q_CAR, "CAR", X, MGR)
