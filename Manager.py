@@ -8,6 +8,7 @@ class College_Info:
         self.JOB = None
         self.COL = None
         self.DEG = None
+        self.REQ = None
         self.TUT = None
         self.LON = None
         self.MTH_PAY = None
@@ -42,6 +43,12 @@ class College_Info:
 
     def SET_DEG(self, DEG):
         self.DEG = DEG
+
+    def GET_REQ(self):
+        return self.REQ
+
+    def SET_REQ(self, REQ):
+        self.REQ = REQ
 
     def GET_TUT(self):
         return self.TUT
@@ -128,21 +135,23 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        self.PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        PAY_LOW = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a entry-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        PAY_UPP = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a senior-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        self.PAY = "Entry: " + str(PAY_LOW) + " | Senior: " + str(PAY_UPP)
         return self.PAY
 
     def GET_DEG_GPT(self):
-        self.DEG = GPT.GET_ANS_TEST_DEG(f"just state the name of the degree needed to get a job as a {self.JOB}, nothing else")
-        if "Associate" in self.DEG:
-            self.DEG = "Associate's degree"
-        if "Bachelor" in self.DEG:
-            self.DEG = "Bachelor's degree"
-        if "Master" in self.DEG:
-            self.DEG = "Master's degree"
-        if "Doctor" in self.DEG:
-            self.DEG = "Doctoral degree"
-        if "High" in self.DEG or "high" in self.DEG:
-            self.DEG = "High school diploma"
+        self.DEG = GPT.GET_ANS_TEST_DEG(f"just state the full name of the specific degree needed to get a job as a {self.JOB}, nothing else")
+        # if "Associate" in self.DEG:
+            # self.DEG = "Associate's degree"
+        # if "Bachelor" in self.DEG:
+            # self.DEG = "Bachelor's degree"
+        # if "Master" in self.DEG:
+            # self.DEG = "Master's degree"
+        # if "Doctor" in self.DEG:
+            # self.DEG = "Doctoral degree"
+        # if "High" in self.DEG or "high" in self.DEG:
+            # self.DEG = "High school diploma"
         return self.DEG
 
     def GET_COL_INF_GPT(self):
@@ -153,6 +162,9 @@ class Manager:
         INF.SET_JOB(self.JOB)
         INF.SET_COL(self.COL)
         INF.SET_DEG(self.DEG)
+        
+        REQ = GPT.GET_ANS_TEST_DEG(f"NO EXTRA DESCRIPTION, state the required GPA, SAT, and ACT scores needed for {self.COL} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
+        INF.SET_REQ(REQ)
 
         INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
 

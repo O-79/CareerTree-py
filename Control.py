@@ -192,6 +192,7 @@ class Control:
             print(f"NAME:       {I.GET_COL()}")
             print(f"LOCATION:   {I.GET_LOC()}")
             print(f"DEGREE:     {I.GET_DEG()}")
+            print(f"REQS:       {I.GET_REQ()}")
             print(f"CAREER:     {I.GET_CAR()}")
             print(f"JOB:        {I.GET_JOB()}")
             print(f"TUITION:    {I.GET_TUT()}") # include total expenses
