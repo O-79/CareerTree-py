@@ -102,7 +102,7 @@ class Manager:
         self.LOC = LOC
 
     def GET_CAR_GPT(self):
-        self.CAR = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} careers in {self.LOC} AS A '|' SEPARATED LIST")
+        self.CAR = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} careers in {self.LOC} AS A '|' SEPARATED LIST")
         return self.CAR
 
     def GET_CAR(self):
@@ -112,7 +112,7 @@ class Manager:
         self.CAR = CAR
 
     def GET_JOB_GPT(self):
-        self.JOB = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} jobs for {self.CAR} AS A '|' SEPARATED LIST")
+        self.JOB = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} jobs for {self.CAR} AS A '|' SEPARATED LIST")
         return self.JOB
 
     def GET_JOB(self):
@@ -125,7 +125,7 @@ class Manager:
         ADD = ""
         if self.INS == 1:
             ADD = " within " + self.LOC
-        self.COL = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronym) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS")
+        self.COL = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronym) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS")
         return self.COL
 
     def GET_COL(self):
@@ -135,13 +135,13 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        PAY_LOW = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a entry-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
-        PAY_UPP = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a senior-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        PAY_LOW = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a entry-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        PAY_UPP = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a senior-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
         self.PAY = "Entry: " + str(PAY_LOW) + " | Senior: " + str(PAY_UPP)
         return self.PAY
 
     def GET_DEG_GPT(self):
-        self.DEG = GPT.GET_ANS_TEST_DEG(f"just state the full name of the specific degree needed to get a job as a {self.JOB}, nothing else")
+        self.DEG = GPT.GET_ANS(f"just state the full name of the specific degree needed to get a job as a {self.JOB}, nothing else")
         # if "Associate" in self.DEG:
             # self.DEG = "Associate's degree"
         # if "Bachelor" in self.DEG:
@@ -163,24 +163,24 @@ class Manager:
         INF.SET_COL(self.COL)
         INF.SET_DEG(self.DEG)
         
-        REQ = GPT.GET_ANS_TEST_DEG(f"NO EXTRA DESCRIPTION, state the required GPA, SAT, and ACT scores needed for {self.COL} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
+        REQ = GPT.GET_ANS(f"NO EXTRA DESCRIPTION, state the required GPA, SAT, and ACT scores needed for {self.COL} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
         INF.SET_REQ(REQ)
 
-        INS = GPT.GET_ANS_TEST_X(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
+        INS = GPT.GET_ANS(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
 
         if INS:
-            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the in-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+            TUT = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the in-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         else:
-            TUT = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the out-of-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+            TUT = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the out-of-state tuition only at {self.COL} for a {self.DEG} degree in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_TUT(TUT)
 
-        LON = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the average student loan taken at {self.COL} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+        LON = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the average student loan taken at {self.COL} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_LON(LON)
 
-        MTH_PAY = int(float(GPT.GET_ANS_TEST_PAY(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the monthly payment for a ${LON} loan in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+        MTH_PAY = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: state the monthly payment for a ${LON} loan in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         INF.SET_MTH_PAY(MTH_PAY)
 
-        LON_OPP = GPT.GET_ANS_TEST(f"NO EXTRA DESCRIPTION: list {self.X} loan repayment options AS A '|' SEPARATED LIST")
+        LON_OPP = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} loan repayment options AS A '|' SEPARATED LIST")
         LON_OPP = re.sub(r'[0-9]+', '', LON_OPP).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
         INF.SET_LON_OPP(LON_OPP)
 

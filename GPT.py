@@ -6,31 +6,6 @@ class GPT:
         KEY = F.read().strip()
         F.close()
 
-    @staticmethod
-    def GET_ANS_TEST(MSG):
-        return GPT.GET_ANS(MSG)
-        # LIN = ""
-        # for i in range(48, 16 + 48):
-        #     C = chr(i)
-        #     LIN += C + ","
-        # LIN = LIN[:-1]
-
-    @staticmethod
-    def GET_ANS_TEST_DEG(MSG):
-        return GPT.GET_ANS(MSG)
-        # return "B.S."
-
-    @staticmethod
-    def GET_ANS_TEST_PAY(MSG):
-        return GPT.GET_ANS(MSG)
-        # return "79000"
-
-    @staticmethod
-    def GET_ANS_TEST_X(MSG):
-        return GPT.GET_ANS(MSG)
-        # return "ABCXYZ"
-
-    @staticmethod
     def GET_ANS(MSG):
         url = "https://api.openai.com/v1/chat/completions"
         api_key = GPT.KEY
