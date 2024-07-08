@@ -2,6 +2,8 @@ from typing import List
 from CTree import CTree
 from Manager import Manager
 import re
+from datetime import datetime
+import os
 
 class Control:
     MENU = "\nWELCOME-TO-THE-CAREER-TREE------\n" \
@@ -78,7 +80,8 @@ class Control:
         else:
             print()
 
-        LOC_ADD = input().title()
+        LOC_INP = input()
+        LOC_ADD = LOC_INP[0].upper() + LOC_INP[1:]
         MGR.SET_LOC(LOC_ADD)
 
         CAR_ADD = Control.PARSE(Control.Q_CAR, "CAR", X, MGR)
@@ -200,6 +203,27 @@ class Control:
             print(f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)") # WIP
             # print(f"PROGRAMS:   {I.GET_LON_OPP()}") # WIP
             print(Control.DSH(''))
+        
+        if COLLEGE_INFO:
+            F_NAME = "Report" + datetime.now().strftime('_%m-%d-%Y_%H;%M;%S.txt')
+            PATH = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
+            if not os.path.exists(PATH):
+                os.makedirs(PATH)
+            PATH = os.path.join(PATH, F_NAME)
+            with open(PATH, 'w') as F:
+                F.write(f"{Control.DSH('COLLEGE REPORT')}\n")
+                for I in COLLEGE_INFO:
+                    F.write(f"NAME:       {I.GET_COL()}\n")
+                    F.write(f"LOCATION:   {I.GET_LOC()}\n")
+                    F.write(f"DEGREE:     {I.GET_DEG()}\n")
+                    F.write(f"REQS:       {I.GET_REQ()}\n")
+                    F.write(f"CAREER:     {I.GET_CAR()}\n")
+                    F.write(f"JOB:        {I.GET_JOB()}\n")
+                    F.write(f"TUITION:    {I.GET_TUT()}\n")
+                    F.write(f"LOAN:       {I.GET_LON()} (avg.)\n")
+                    F.write(f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)\n")
+                    F.write(f"{Control.DSH('')}\n")
+                F.close()
 
 if __name__ == "__main__":
     Control.main()

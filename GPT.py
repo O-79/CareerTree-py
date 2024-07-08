@@ -2,9 +2,9 @@ import requests
 import json
 
 class GPT:
-    with open("key.txt", 'r') as f:
-        KEY = f.read().strip()
-        f.close()
+    with open("key.txt", 'r') as F:
+        KEY = F.read().strip()
+        F.close()
 
     @staticmethod
     def GET_ANS_TEST(MSG):
