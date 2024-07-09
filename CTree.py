@@ -96,9 +96,18 @@ class CTree:
         s = []
         s.append(f"LOC {self.ROT.GET()}")
         for A in self.ROT.GET_ARR():
-            s.append(f"   CAR {A.GET()}")
+            BOX = '├'
+            if A is self.ROT.GET_ARR()[-1]:
+                BOX = '└'
+            s.append(f" {BOX}── CAR {A.GET()}")
             for B in A.GET_ARR():
-                s.append(f"      JOB {B.GET()}")
+                BOX = '├'
+                if B is A.GET_ARR()[-1]:
+                    BOX = '└'
+                s.append(f"      {BOX}── JOB {B.GET()}")
                 for C in B.GET_ARR():
-                    s.append(f"         COL {C.GET()}")
+                    BOX = '├'
+                    if C is B.GET_ARR()[-1]:
+                        BOX = '└'
+                    s.append(f"           {BOX}── COL {C.GET()}")
         return "\n".join(s)

@@ -136,6 +136,10 @@ class Control:
 
     @staticmethod
     def main():
+        PATH = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
+        if not os.path.exists(PATH):
+            os.makedirs(PATH)
+        
         MGR = Manager()
         CAREER_TREE = CTree()
         COLLEGE_INFO: List[Manager.College_Info] = []
@@ -204,13 +208,19 @@ class Control:
             # print(f"PROGRAMS:   {I.GET_LON_OPP()}") # WIP
             print(Control.DSH(''))
         
+        STR_TIME = datetime.now().strftime('%m-%d-%Y_%H;%M;%S.txt')
+        os.makedirs(os.path.join(PATH, STR_TIME))
+        
+        F_NAME_CTREE = "Tree_" + STR_TIME
+        PATH_CTREE = os.path.join(os.path.join(PATH, STR_TIME), F_NAME_CTREE)
+        with open(PATH_CTREE, 'w', encoding="utf-8") as F:
+            F.write(f"{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")
+            F.close()
+        
         if COLLEGE_INFO:
-            F_NAME = "Report" + datetime.now().strftime('_%m-%d-%Y_%H;%M;%S.txt')
-            PATH = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
-            if not os.path.exists(PATH):
-                os.makedirs(PATH)
-            PATH = os.path.join(PATH, F_NAME)
-            with open(PATH, 'w') as F:
+            F_NAME_COLREP = "Report_" + STR_TIME
+            PATH_COLREP = os.path.join(os.path.join(PATH, STR_TIME), F_NAME_COLREP)
+            with open(PATH_COLREP, 'w', encoding="utf-8") as F:
                 F.write(f"{Control.DSH('COLLEGE REPORT')}\n")
                 for I in COLLEGE_INFO:
                     F.write(f"NAME:       {I.GET_COL()}\n")
