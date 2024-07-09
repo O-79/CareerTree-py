@@ -31,6 +31,7 @@ ChatGPT's responses will be based on a selected *response size, X*, which is a c
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>JOB:</b> Veterinarian<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Salary:</em>  $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>COLLEGE:</b> Duke University<br/>
+  &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Requirements:</em>   XYZ<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Tuition:</em>        $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Avg. Loan:</em>      $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Loan Programs:</em>  A, B, C, X, Y, Z<br/>
@@ -45,12 +46,14 @@ ChatGPT's responses will be based on a selected *response size, X*, which is a c
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>JOB:</b> Cybersecurity Specialist<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Salary:</em>  $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>COLLEGE:</b> North Carolina State University<br/>
+  &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Requirements:</em>   XYZ<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Tuition:</em>        $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Avg. Loan:</em>      $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Loan Programs:</em>  A, B, C, X, Y, Z<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Time to Repay:</em>  X.Y months<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>COLLEGE:</b> University of North Carolina at Chapel Hill<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍┫ <b>COLLEGE:</b> University of North Carolina at Charlotte<br/>
+  &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Requirements:</em>   XYZ<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Tuition:</em>        $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Avg. Loan:</em>      $$$<br/>
   &emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍&emsp;&emsp;&emsp;╍═ <em>Loan Programs:</em>  A, B, C, X, Y, Z<br/>
