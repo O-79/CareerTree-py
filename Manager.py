@@ -125,7 +125,7 @@ class Manager:
         ADD = ""
         if self.INS == 1:
             ADD = " within " + self.LOC
-        self.COL = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronym) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS")
+        self.COL = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} colleges (only their acronym) for a {self.JOB} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS").replace(" U", '')
         return self.COL
 
     def GET_COL(self):

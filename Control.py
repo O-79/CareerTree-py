@@ -6,34 +6,34 @@ from datetime import datetime
 import os
 
 class Control:
-    MENU = "\nWELCOME-TO-THE-CAREER-TREE------\n" \
-           + "USING:-gpt-turbo-3.5------------\n" \
-           + "--CMD-MENU----------------------\n" \
-           + "----\"(L)OC\"-:--LOC-CAR-JOB-COL--\n" \
-           + "--------RESETS-TREE-------------\n" \
-           + "----\"(C)AR\"-:--CAR-JOB-COL------\n" \
-           + "----\"(J)OB\"-:--JOB-COL----------\n" \
-           + "----\"(U)COL\":--COL--------------\n" \
-           + "----\"(Q)UIT\":--QUIT-------------\n\n"
+    MENU = "\nWELCOME TO THE CAREER TREE\n" \
+           + "USING: gpt turbo 3.5\n" \
+           + "  CMD MENU\n" \
+           + "    'LOC' / 'l'   →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n" \
+           + "    'CAR' / 'c'   →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
+           + "    'JOB' / 'j'   →  Select an existing job     / Create a new medium branch with a job, college\n" \
+           + "    'COL' / 'u'   →  Select an existing college / Create a new short branch  with a college\n" \
+           + "    'QUIT' / 'q'  →  Export Tree & College Report then quit application\n\n"
 
-    Q_SIZ = "* Size of responses ? (4 [Faster] - 16 [Slower])"
+    Q_SIZ = "─ Size of responses ? (4 [Faster] - 16 [Slower])"
     
-    Q_INS = "* In-state colleges only? (0 [No] / 1 [Yes])"
+    Q_INS = "─ In-state colleges only? (0 [No] / 1 [Yes])"
 
-    Q_LOC = "* Enter your current / desired location"
+    Q_LOC = "─ Enter your current / desired location"
 
-    Q_CAR = "* Choose one of the following careers (add / select)"
+    Q_CAR = "┌ Choose one of the following careers (add / select)"
 
-    Q_JOB = "* Choose one of the following jobs (add / select)"
+    Q_JOB = "┌ Choose one of the following jobs (add / select)"
 
-    Q_COL = "* Choose one of the following colleges (add / select)"
+    Q_COL = "┌ Choose one of the following colleges (add / select)"
 
-    A_DEG = "* You will need the following degree: "
+    A_DEG = "┌ You will need the following degree: "
 
-    A_PAY = "* Salary: "
+    A_PAY = "└ Salary: "
 
     @staticmethod
     def PARSE(Q: str, TYP: str, X: int, MGR):
+        print()
         print(Q)
         XYZ = ""
         if TYP == "CAR":
@@ -43,14 +43,24 @@ class Control:
         elif TYP == "COL":
             XYZ = MGR.GET_COL_GPT()
         
-        XYZ = re.sub(r'[0-9]+', '', XYZ).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
+        XYZ = re.sub(r"[0-9]+", '', XYZ).replace(" .", '.').replace(". ", '.').replace('.', '').replace(" |", '|').replace("| ", '|').replace('\n', '|').replace("||", '|')
         
         if XYZ[-1] == '|':
             XYZ = XYZ[:-1]
         
         X = XYZ.count('|') + 1
-
-        print(f"* Choose (1 - {X}):\n{XYZ}")
+        
+        print(f"├ [1 - {X}]")
+        
+        XYZ_ARR = XYZ.split('|')
+        
+        for i, I in enumerate(XYZ_ARR):
+            if I is XYZ_ARR[-1]:
+                print(f"└── {i + 1}. {I}")
+            else:
+                print(f"├── {i + 1}. {I}")
+        
+        print("→", end = ' ')
         try:
             SEL = int(input())
         except ValueError:
@@ -61,7 +71,7 @@ class Control:
         if SEL > X:
             SEL = X
 
-        XYZ_SEL = XYZ.split('|')[SEL - 1].strip()
+        XYZ_SEL = XYZ_ARR[SEL - 1].strip()
 
         if TYP == "CAR":
             MGR.SET_CAR(XYZ_SEL)
@@ -71,13 +81,13 @@ class Control:
             MGR.SET_COL(XYZ_SEL)
 
         if TYP == "JOB":
-            print(f"{Control.A_DEG}{MGR.GET_DEG_GPT()}\n{Control.A_PAY}{MGR.GET_PAY_GPT()}")
+            print(f"\n{Control.A_DEG}{MGR.GET_DEG_GPT()}\n{Control.A_PAY}{MGR.GET_PAY_GPT()}")
 
         return XYZ_SEL
 
     @staticmethod
     def CMD_LOC(CAREER_TREE, X: int, MGR):
-        print(Control.Q_LOC, end='')
+        print(Control.Q_LOC, end = '')
         if MGR.GET_LOC() is not None:
             print(" (resets tree)")
         else:
@@ -126,14 +136,14 @@ class Control:
     @staticmethod
     def DSH(TXT: str) -> str:
         if len(TXT) > 32:
-            return "--------------------------------"
+            return "────────────────────────────────"
 
-        TXT.replace(' ', '-')
+        TXT = TXT.replace(' ', '─')
         X = 32 - len(TXT)
 
-        LIN = '-' * (X // 2) + TXT + '-' * (X // 2)
+        LIN = '─' * (X // 2) + TXT + '─' * (X // 2)
         if X % 2 == 1:
-            LIN += '-'
+            LIN += '─'
 
         return LIN
 
@@ -147,8 +157,9 @@ class Control:
         CAREER_TREE = CTree()
         COLLEGE_INFO: List[Manager.College_Info] = []
 
-        X = 0
+        X = -1
         print(Control.Q_SIZ)
+        print("→", end = ' ')
         try:
             X = int(input())
             if X < 4:
@@ -158,8 +169,9 @@ class Control:
         except ValueError:
             X = 10
         
-        INS = -1 # 0: OOS , 1: INS
+        INS = -1 # 0 = OOS , 1 = INS
         print(Control.Q_INS)
+        print("→", end = ' ')
         try:
             INS = int(input())
             if INS != 0 and INS != 1:
@@ -169,7 +181,7 @@ class Control:
         
         MGR.INIT(X, INS)
 
-        print(Control.MENU, end='')
+        print(Control.MENU, end = '')
 
         CMD = "loc"
         while CMD.lower() not in ["quit", "exit", "q"]:
@@ -190,7 +202,7 @@ class Control:
             if INF:
                 COLLEGE_INFO.append(INF)
 
-            print("\n>", end=" ")
+            print("\n→", end = ' ')
             CMD = input()
 
         print(f"\n{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")
