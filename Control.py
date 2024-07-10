@@ -45,6 +45,9 @@ class Control:
         
         XYZ = re.sub(r'[0-9]+', '', XYZ).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
         
+        if XYZ[-1] == '|':
+            XYZ = XYZ[:-1]
+        
         X = XYZ.count('|') + 1
 
         print(f"* Choose (1 - {X}):\n{XYZ}")
@@ -57,7 +60,7 @@ class Control:
             SEL = 1
         if SEL > X:
             SEL = X
-        
+
         XYZ_SEL = XYZ.split('|')[SEL - 1].strip()
 
         if TYP == "CAR":
