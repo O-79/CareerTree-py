@@ -163,7 +163,7 @@ class Manager:
         INF.SET_COL(self.COL)
         INF.SET_DEG(self.DEG)
         
-        REQ = GPT.GET_ANS(f"NO EXTRA DESCRIPTION, state the required GPA, SAT, and ACT scores needed for {self.COL} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
+        REQ = GPT.GET_ANS(f"NO EXTRA DESCRIPTION, state the required GPA (unweighted), SAT, and ACT scores needed for {self.COL} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
         INF.SET_REQ(REQ)
 
         INS = GPT.GET_ANS(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.COL} within the same state as {self.LOC}").lower() == 'y'
