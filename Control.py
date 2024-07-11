@@ -14,11 +14,11 @@ class Control:
     MENU = "\n WELCOME TO THE CAREER TREE\n" \
          + " USING: gpt turbo 3.5\n" \
          + "   CMD MENU\n" \
-         + "     'LOC' / 'l'   →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n" \
-         + "     'CAR' / 'c'   →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
-         + "     'JOB' / 'j'   →  Select an existing job     / Create a new medium branch with a job, college\n" \
-         + "     'COL' / 'u'   →  Select an existing college / Create a new short branch  with a college\n" \
-         + "     'QUIT' / 'q'  →  Export Tree & College Report then quit application\n"
+         + "     'LOC' / 'l'  →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n" \
+         + "     'CAR' / 'c'  →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
+         + "     'JOB' / 'j'  →  Select an existing job     / Create a new medium branch with a job, college\n" \
+         + "     'COL' / 'u'  →  Select an existing college / Create a new short branch  with a college\n" \
+         + "     'QUIT' / 'q' →  Export Tree & College Report then quit application\n"
 
     Q_SIZ = "─ Size of responses ? [4 (Faster) - 16 (Slower)]"
     
