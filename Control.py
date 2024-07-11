@@ -23,7 +23,7 @@ class Control:
 
     Q_SIZ = "─ Size of responses ? [4 (Faster) - 16 (Slower)]"
     
-    Q_INS = "─ In-state colleges only? [0 (No) / 1 (Yes)]"
+    Q_INS = "─ In-state colleges only ? [0 (No) / 1 (Yes)]"
 
     Q_LOC = "─ Enter your current / desired location"
 
