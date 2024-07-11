@@ -142,16 +142,6 @@ class Manager:
 
     def GET_DEG_GPT(self):
         self.DEG = GPT.GET_ANS(f"just state the full name of the specific degree needed to get a job as a {self.JOB}, nothing else")
-        # if "Associate" in self.DEG:
-            # self.DEG = "Associate's degree"
-        # if "Bachelor" in self.DEG:
-            # self.DEG = "Bachelor's degree"
-        # if "Master" in self.DEG:
-            # self.DEG = "Master's degree"
-        # if "Doctor" in self.DEG:
-            # self.DEG = "Doctoral degree"
-        # if "High" in self.DEG or "high" in self.DEG:
-            # self.DEG = "High school diploma"
         return self.DEG
 
     def GET_COL_INF_GPT(self):

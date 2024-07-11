@@ -55,7 +55,7 @@ class Control:
         XYZ_ARR = XYZ.split('|')
         
         for i, I in enumerate(XYZ_ARR):
-            if I is XYZ_ARR[-1]:
+            if I == XYZ_ARR[-1]:
                 print(f"└── {i + 1}. {I}")
             else:
                 print(f"├── {i + 1}. {I}")
