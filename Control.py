@@ -20,9 +20,9 @@ class Control:
          + "     'COL' / 'u'   →  Select an existing college / Create a new short branch  with a college\n" \
          + "     'QUIT' / 'q'  →  Export Tree & College Report then quit application\n"
 
-    Q_SIZ = "─ Size of responses ? (4 [Faster] - 16 [Slower])"
+    Q_SIZ = "─ Size of responses ? [4 (Faster) - 16 (Slower)]"
     
-    Q_INS = "─ In-state colleges only? (0 [No] / 1 [Yes])"
+    Q_INS = "─ In-state colleges only? [0 (No) / 1 (Yes)]"
 
     Q_LOC = "─ Enter your current / desired location"
 
