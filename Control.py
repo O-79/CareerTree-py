@@ -184,19 +184,19 @@ class Control:
         print(Control.MENU, end = '')
 
         CMD = "loc"
-        while CMD.lower() not in ["quit", "exit", "q"]:
+        while CMD not in ["quit", "exit", "q"]:
             INF = None
 
-            if CMD.lower() in ["loc", "location", "l"]:
+            if CMD in ["loc", "location", "l"]:
                 INF = Control.CMD_LOC(CAREER_TREE, X, MGR)
 
-            if CMD.lower() in ["car", "career", "c"]:
+            if CMD in ["car", "career", "c"]:
                 INF = Control.CMD_CAR(CAREER_TREE, X, MGR)
 
-            if CMD.lower() in ["job", "position", "j"]:
+            if CMD in ["job", "position", "j"]:
                 INF = Control.CMD_JOB(CAREER_TREE, X, MGR)
 
-            if CMD.lower() in ["col", "college", "uni", "university", "u"]:
+            if CMD in ["col", "college", "uni", "university", "u"]:
                 INF = Control.CMD_COL(CAREER_TREE, X, MGR)
 
             if INF:
@@ -204,6 +204,7 @@ class Control:
 
             print("\n→", end = ' ')
             CMD = input()
+            CMD = CMD.lower()
 
         print(f"\n{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")
 
