@@ -49,7 +49,7 @@ class Control:
         elif TYP == "COL":
             XYZ = MGR.GET_COL_GPT()
         
-        XYZ = re.sub(r"[0-9]+", '', XYZ).replace(" .", '.').replace(". ", '.').replace('.', '').replace(" |", '|').replace("| ", '|').replace('\n', '|').replace("||", '|')
+        XYZ = re.sub(r'[0-9]+', '', XYZ).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
         
         if XYZ[-1] == '|':
             XYZ = XYZ[:-1]
@@ -218,7 +218,7 @@ class Control:
             CMD = CMD.lower()
 
         print(Control.COL(93), f"\n {Control.DSH('TREE')}", Control.COL(0))
-        print(Control.COL(96), f"{CAREER_TREE.LST()}", Control.COL(0))
+        print(Control.COL(96), f"{CAREER_TREE.LST().replace('\n', '\n ')}", Control.COL(0))
         print(Control.COL(93), f"{Control.DSH('')}", Control.COL(0))
 
         print(Control.COL(93), f"\n {Control.DSH('COLLEGE REPORT')}", Control.COL(0))

@@ -135,8 +135,8 @@ class Manager:
         self.COL = COL
 
     def GET_PAY_GPT(self):
-        PAY_LOW = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a entry-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
-        PAY_UPP = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a senior-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace("USD", '').strip()))
+        PAY_LOW = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a entry-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
+        PAY_UPP = int(float(GPT.GET_ANS(f"NO EXTRA DESCRIPTION, JUST ONE INTEGER: return the average annual pay for a senior-level {self.JOB} job in {self.LOC} in USD").replace('$', '').replace(',', '').replace('USD', '').strip()))
         self.PAY = "Entry: " + str(PAY_LOW) + " | Senior: " + str(PAY_UPP)
         return self.PAY
 
