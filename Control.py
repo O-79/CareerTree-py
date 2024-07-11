@@ -102,6 +102,8 @@ class Control:
         print(Control.COL(96), "→", end = ' ')
         LOC_INP = input()
         print(Control.COL(0), end = '')
+        if LOC_INP == '':
+            LOC_INP = "United States of America" # default
         LOC_ADD = LOC_INP[0].upper() + LOC_INP[1:]
         MGR.SET_LOC(LOC_ADD)
 
