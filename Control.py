@@ -8,6 +8,7 @@ import os
 class Control:
     os.system("")
     
+    @staticmethod
     def COL(TYP) -> str:
         return f"\33[{TYP}m"
     
