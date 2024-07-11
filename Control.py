@@ -6,14 +6,19 @@ from datetime import datetime
 import os
 
 class Control:
-    MENU = "\nWELCOME TO THE CAREER TREE\n" \
-           + "USING: gpt turbo 3.5\n" \
-           + "  CMD MENU\n" \
-           + "    'LOC' / 'l'   →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n" \
-           + "    'CAR' / 'c'   →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
-           + "    'JOB' / 'j'   →  Select an existing job     / Create a new medium branch with a job, college\n" \
-           + "    'COL' / 'u'   →  Select an existing college / Create a new short branch  with a college\n" \
-           + "    'QUIT' / 'q'  →  Export Tree & College Report then quit application\n\n"
+    os.system("")
+    
+    def COL(TYP) -> str:
+        return f"\33[{TYP}m"
+    
+    MENU = "\n WELCOME TO THE CAREER TREE\n" \
+         + " USING: gpt turbo 3.5\n" \
+         + "   CMD MENU\n" \
+         + "     'LOC' / 'l'   →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n" \
+         + "     'CAR' / 'c'   →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
+         + "     'JOB' / 'j'   →  Select an existing job     / Create a new medium branch with a job, college\n" \
+         + "     'COL' / 'u'   →  Select an existing college / Create a new short branch  with a college\n" \
+         + "     'QUIT' / 'q'  →  Export Tree & College Report then quit application\n"
 
     Q_SIZ = "─ Size of responses ? (4 [Faster] - 16 [Slower])"
     
@@ -34,7 +39,7 @@ class Control:
     @staticmethod
     def PARSE(Q: str, TYP: str, X: int, MGR):
         print()
-        print(Q)
+        print(Control.COL(93), Q, Control.COL(0))
         XYZ = ""
         if TYP == "CAR":
             XYZ = MGR.GET_CAR_GPT()
@@ -50,19 +55,20 @@ class Control:
         
         X = XYZ.count('|') + 1
         
-        print(f"├ [1 - {X}]")
+        print(Control.COL(93), f"├ [1 - {X}]", Control.COL(93))
         
         XYZ_ARR = XYZ.split('|')
         
         for i, I in enumerate(XYZ_ARR):
             if I == XYZ_ARR[-1]:
-                print(f"└── {i + 1}. {I}")
+                print(Control.COL(96), f"└── {i + 1}. {I}", Control.COL(0))
             else:
-                print(f"├── {i + 1}. {I}")
+                print(Control.COL(96), f"├── {i + 1}. {I}", Control.COL(0))
         
-        print("→", end = ' ')
+        print(Control.COL(96), "→", end = ' ')
         try:
             SEL = int(input())
+            print(Control.COL(0), end = '')
         except ValueError:
             SEL = 1
 
@@ -81,19 +87,20 @@ class Control:
             MGR.SET_COL(XYZ_SEL)
 
         if TYP == "JOB":
-            print(f"\n{Control.A_DEG}{MGR.GET_DEG_GPT()}\n{Control.A_PAY}{MGR.GET_PAY_GPT()}")
+            print(Control.COL(94), f"\n {Control.A_DEG}{MGR.GET_DEG_GPT()}\n {Control.A_PAY}{MGR.GET_PAY_GPT()}", Control.COL(0))
 
         return XYZ_SEL
 
     @staticmethod
     def CMD_LOC(CAREER_TREE, X: int, MGR):
-        print(Control.Q_LOC, end = '')
+        print(Control.COL(93), Control.Q_LOC, Control.COL(0), end = '')
         if MGR.GET_LOC() is not None:
-            print(" (resets tree)")
+            print(Control.COL(93), " (resets tree)", Control.COL(0))
         else:
             print()
-
+        print(Control.COL(96), "→", end = ' ')
         LOC_INP = input()
+        print(Control.COL(0), end = '')
         LOC_ADD = LOC_INP[0].upper() + LOC_INP[1:]
         MGR.SET_LOC(LOC_ADD)
 
@@ -158,10 +165,11 @@ class Control:
         COLLEGE_INFO: List[Manager.College_Info] = []
 
         X = -1
-        print(Control.Q_SIZ)
-        print("→", end = ' ')
+        print(Control.COL(93), Control.Q_SIZ, Control.COL(0))
+        print(Control.COL(96), "→", end = ' ')
         try:
             X = int(input())
+            print(Control.COL(0), end = '');
             if X < 4:
                 X = 4
             if X > 16:
@@ -170,10 +178,11 @@ class Control:
             X = 10
         
         INS = -1 # 0 = OOS , 1 = INS
-        print(Control.Q_INS)
-        print("→", end = ' ')
+        print(Control.COL(93), Control.Q_INS, Control.COL(0))
+        print(Control.COL(96), "→", end = ' ')
         try:
             INS = int(input())
+            print(Control.COL(0), end = '')
             if INS != 0 and INS != 1:
                 INS = 1
         except ValueError:
@@ -181,7 +190,7 @@ class Control:
         
         MGR.INIT(X, INS)
 
-        print(Control.MENU, end = '')
+        print(Control.COL(94), Control.MENU, Control.COL(0))
 
         CMD = "loc"
         while CMD not in ["quit", "exit", "q"]:
@@ -202,27 +211,30 @@ class Control:
             if INF:
                 COLLEGE_INFO.append(INF)
 
-            print("\n→", end = ' ')
+            print(Control.COL(91), "\n →", end = ' ')
             CMD = input()
+            print(Control.COL(0), end = '')
             CMD = CMD.lower()
 
-        print(f"\n{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")
+        print(Control.COL(93), f"\n {Control.DSH('TREE')}", Control.COL(0))
+        print(Control.COL(96), f"{CAREER_TREE.LST()}", Control.COL(0))
+        print(Control.COL(93), f"{Control.DSH('')}", Control.COL(0))
 
-        print(f"\n{Control.DSH('COLLEGE REPORT')}")
+        print(Control.COL(93), f"\n {Control.DSH('COLLEGE REPORT')}", Control.COL(0))
         if not COLLEGE_INFO:
             print("no colleges\n" + Control.DSH(''))
         for I in COLLEGE_INFO:
-            print(f"NAME:       {I.GET_COL()}")
-            print(f"LOCATION:   {I.GET_LOC()}")
-            print(f"DEGREE:     {I.GET_DEG()}")
-            print(f"REQS:       {I.GET_REQ()}")
-            print(f"CAREER:     {I.GET_CAR()}")
-            print(f"JOB:        {I.GET_JOB()}")
-            print(f"TUITION:    {I.GET_TUT()}") # include total expenses
-            print(f"LOAN:       {I.GET_LON()} (avg.)") # WIP
-            print(f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)") # WIP
-            # print(f"PROGRAMS:   {I.GET_LON_OPP()}") # WIP
-            print(Control.DSH(''))
+            print(Control.COL(96), f"NAME:       {I.GET_COL()}", Control.COL(0))
+            print(Control.COL(96), f"LOCATION:   {I.GET_LOC()}", Control.COL(0))
+            print(Control.COL(96), f"DEGREE:     {I.GET_DEG()}", Control.COL(0))
+            print(Control.COL(96), f"REQS:       {I.GET_REQ()}", Control.COL(0))
+            print(Control.COL(96), f"CAREER:     {I.GET_CAR()}", Control.COL(0))
+            print(Control.COL(96), f"JOB:        {I.GET_JOB()}", Control.COL(0))
+            print(Control.COL(96), f"TUITION:    {I.GET_TUT()}", Control.COL(0)) # include total expenses
+            print(Control.COL(96), f"LOAN:       {I.GET_LON()} (avg.)", Control.COL(0)) # WIP
+            print(Control.COL(96), f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)", Control.COL(0)) # WIP
+            # print(Control.COL(93), f"PROGRAMS:   {I.GET_LON_OPP()}", Control.COL(0)) # WIP
+            print(Control.COL(93), Control.DSH(''), Control.COL(0))
         
         STR_TIME = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         os.makedirs(os.path.join(PATH, STR_TIME))
