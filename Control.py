@@ -1,9 +1,9 @@
+import os
 from typing import List
 from CTree import CTree
 from Manager import Manager
 import re
 from datetime import datetime
-import os
 
 class Control:
     os.system("")
@@ -218,7 +218,7 @@ class Control:
             CMD = CMD.lower()
 
         print(Control.COL(93), f"\n {Control.DSH('TREE')}", Control.COL(0))
-        print(Control.COL(96), f"{CAREER_TREE.LST().replace('\n', '\n ')}", Control.COL(0))
+        print(Control.COL(96), f"{CAREER_TREE.STR().replace('\n', '\n ')}", Control.COL(0))
         print(Control.COL(93), f"{Control.DSH('')}", Control.COL(0))
 
         print(Control.COL(93), f"\n {Control.DSH('COLLEGE REPORT')}", Control.COL(0))
@@ -243,7 +243,7 @@ class Control:
         F_NAME_CTREE = "Tree_" + STR_TIME + ".txt"
         PATH_CTREE = os.path.join(os.path.join(PATH, STR_TIME), F_NAME_CTREE)
         with open(PATH_CTREE, 'w', encoding="utf-8") as F:
-            F.write(f"{Control.DSH('TREE')}\n{CAREER_TREE.LST()}\n{Control.DSH('')}")
+            F.write(f"{Control.DSH('TREE')}\n{CAREER_TREE.STR()}\n{Control.DSH('')}")
             F.close()
         
         if COLLEGE_INFO:

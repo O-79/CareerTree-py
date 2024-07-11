@@ -92,7 +92,7 @@ class CTree:
             return self.SER_COL(CAR, JOB, COL)
         return False
 
-    def LST(self):
+    def STR(self):
         s = []
         s.append(f"LOC {self.ROT.GET()}")
         for A in self.ROT.GET_ARR():
