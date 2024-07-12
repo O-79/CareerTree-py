@@ -88,7 +88,7 @@ class Control:
             MGR.SET_COL(XYZ_SEL)
 
         if TYP == "JOB":
-            print(Control.COL(94), f"\n {Control.A_DEG}{MGR.GET_DEG_GPT()}\n {Control.A_PAY}{MGR.GET_PAY_GPT()}", Control.COL(0))
+            print(Control.COL(92), f"\n {Control.A_DEG}{MGR.GET_DEG_GPT()}\n {Control.A_PAY}{MGR.GET_PAY_GPT()}", Control.COL(0))
 
         return XYZ_SEL
 
@@ -193,7 +193,7 @@ class Control:
         
         MGR.INIT(X, INS)
 
-        print(Control.COL(94), Control.MENU, Control.COL(0))
+        print(Control.COL(92), Control.MENU, Control.COL(0))
 
         CMD = "loc"
         while CMD not in ["quit", "exit", "q"]:
