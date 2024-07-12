@@ -230,6 +230,7 @@ class Control:
 
             if CMD in ["loc", "location", "l"]:
                 INF = Control.CMD_LOC(CAREER_TREE, X, MGR)
+                COLLEGE_INFO = []
 
             if CMD in ["car", "career", "c"]:
                 INF = Control.CMD_CAR(CAREER_TREE, X, MGR)
