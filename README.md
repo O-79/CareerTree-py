@@ -1,6 +1,9 @@
 # Career Tree
 ![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
 
+### Run in CLI:
+<code>python Control.py</code>
+
 <h3>What Is It?</h3>
 
 Career Tree is a tool primarily made for high school students / graduates which creates *a tree to map potential career paths* starting from the single root, the desired location.
