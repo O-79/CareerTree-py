@@ -24,6 +24,7 @@ class Control:
          + "     'COL' / 'u'  →  Select an existing college / Create a new short branch  with a college\n" \
          + "     'INFO' / 'i' →  More information about currently selected college\n" \
          + "     'VIEW' / 'v' →  View current Career Tree & College Report\n" \
+         + "     'AI'         →  Ask a custom but related question\n" \
          + "     'QUIT' / 'q' →  Export Career Tree & College Report, exit application\n"
 
     Q_SIZ = "─ Size of list responses from AI ? [4 (Faster) - 16 (Slower)]"
@@ -99,6 +100,7 @@ class Control:
 
     @staticmethod
     def CMD_LOC(CAREER_TREE, X: int, MGR):
+        print()
         print(Control.COL(93), Control.Q_LOC, Control.COL(0), end = '')
         if MGR.GET_LOC() is not None:
             print(Control.COL(93), " (resets tree)", Control.COL(0))
@@ -220,7 +222,7 @@ class Control:
         
         MGR.INIT(X, INS)
 
-        print(Control.COL(92), Control.MENU, Control.COL(0))
+        print(Control.COL(92), Control.MENU, Control.COL(0), end = '')
 
         CMD = "loc"
         while CMD not in ["quit", "exit", "q"]:
@@ -243,7 +245,13 @@ class Control:
             
             if CMD in ["view", "v"]:
                 Control.PRINT(CAREER_TREE, COLLEGE_INFO)
-
+            
+            if CMD in ["ai"]:
+                print(Control.COL(94), "\n →", end = ' ')
+                Q = input()
+                print(Control.COL(0), end = '')
+                print(Control.COL(92), "\n─", MGR.GET_EXT_GPT(Q), Control.COL(0))
+            
             if INF:
                 COLLEGE_INFO.append(INF)
 

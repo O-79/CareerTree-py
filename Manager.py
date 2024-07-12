@@ -146,6 +146,9 @@ class Manager:
 
     def GET_COL_DSC_GPT(self) -> str:
         return GPT.GET_ANS(f"tell me more about {self.COL}")
+    
+    def GET_EXT_GPT(self, Q) -> str:
+        return GPT.GET_ANS_X("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7)
 
     def GET_COL_INF_GPT(self):
         INF = College_Info()
