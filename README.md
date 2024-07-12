@@ -1,7 +1,7 @@
 # Career Tree
 ![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
 
-### Run in CLI:
+<h3>Run in CLI</h3>
 <code>python Control.py</code>
 
 <h3>What Is It?</h3>
@@ -20,7 +20,7 @@ Generative AI (ChatGPT) will be used to list potential:
 ChatGPT's responses will be based on a selected *response size, X*, which is a constant used at all branch levels of the tree to generate an *X* number of careers based on location, jobs based on career, etc.
 > For example, X = 6 gives the following maximum tree size (nodes per level): 1 -> 6 -> 36 -> 216
 
-<h3>An Example Career Tree (Put In Text):</h3>
+<h3>An Example Career Tree (Put In Text)</h3>
 <details>
   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄<br/>
   Powered by: gpt-3.5-turbo<br/>
