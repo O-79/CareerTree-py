@@ -6,7 +6,10 @@ import re
 from datetime import datetime
 
 class Control:
-    os.system("")
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
     
     @staticmethod
     def COL(TYP) -> str:
@@ -19,11 +22,13 @@ class Control:
          + "     'CAR' / 'c'  →  Select an existing career  / Create a new long branch   with a career, job, college\n" \
          + "     'JOB' / 'j'  →  Select an existing job     / Create a new medium branch with a job, college\n" \
          + "     'COL' / 'u'  →  Select an existing college / Create a new short branch  with a college\n" \
-         + "     'QUIT' / 'q' →  Export Tree & College Report then quit application\n"
+         + "     'INFO' / 'i' →  More information about currently selected college\n" \
+         + "     'VIEW' / 'v' →  View current Career Tree & College Report\n" \
+         + "     'QUIT' / 'q' →  Export Career Tree & College Report, exit application\n"
 
-    Q_SIZ = "─ Size of responses ? [4 (Faster) - 16 (Slower)]"
+    Q_SIZ = "─ Size of list responses from AI ? [4 (Faster) - 16 (Slower)]"
     
-    Q_INS = "─ In-state colleges only ? [0 (No) / 1 (Yes)]"
+    Q_INS = "─ Are you interested in out-of-state colleges ? [Yes / No]"
 
     Q_LOC = "─ Enter your current / desired location"
 
@@ -144,6 +149,28 @@ class Control:
         return MGR.GET_COL_INF_GPT() if CAREER_TREE.ADD(3, MGR.GET_LOC(), MGR.GET_CAR(), MGR.GET_JOB(), COL_ADD) else None
 
     @staticmethod
+    def PRINT(CAREER_TREE: CTree(), COLLEGE_INFO = []):
+        print(Control.COL(93), f"\n {Control.DSH('TREE')}", Control.COL(0))
+        print(Control.COL(96), f"{CAREER_TREE.STR().replace('\n', '\n ')}", Control.COL(0))
+        print(Control.COL(93), f"{Control.DSH('')}", Control.COL(0))
+
+        print(Control.COL(93), f"\n {Control.DSH('COLLEGE REPORT')}", Control.COL(0))
+        if not COLLEGE_INFO:
+            print("no colleges\n" + Control.DSH(''))
+        for I in COLLEGE_INFO:
+            print(Control.COL(96), f"NAME:       {I.GET_COL()}", Control.COL(0))
+            print(Control.COL(96), f"LOCATION:   {I.GET_LOC()}", Control.COL(0))
+            print(Control.COL(96), f"DEGREE:     {I.GET_DEG()}", Control.COL(0))
+            print(Control.COL(96), f"REQS:       {I.GET_REQ()}", Control.COL(0))
+            print(Control.COL(96), f"CAREER:     {I.GET_CAR()}", Control.COL(0))
+            print(Control.COL(96), f"JOB:        {I.GET_JOB()}", Control.COL(0))
+            print(Control.COL(96), f"TUITION:    {I.GET_TUT()}", Control.COL(0)) # include total expenses
+            print(Control.COL(96), f"LOAN:       {I.GET_LON()} (avg.)", Control.COL(0)) # WIP
+            print(Control.COL(96), f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)", Control.COL(0)) # WIP
+            # print(Control.COL(93), f"PROGRAMS:   {I.GET_LON_OPP()}", Control.COL(0)) # WIP
+            print(Control.COL(93), Control.DSH(''), Control.COL(0))
+
+    @staticmethod
     def DSH(TXT: str) -> str:
         if len(TXT) > 32:
             return "────────────────────────────────"
@@ -167,7 +194,7 @@ class Control:
         CAREER_TREE = CTree()
         COLLEGE_INFO: List[Manager.College_Info] = []
 
-        X = -1
+        X = 10
         print(Control.COL(93), Control.Q_SIZ, Control.COL(0))
         print(Control.COL(96), "→", end = ' ')
         try:
@@ -180,14 +207,14 @@ class Control:
         except ValueError:
             X = 10
         
-        INS = -1 # 0 = OOS , 1 = INS
+        INS = 1 # 0 = OOS , 1 = INS
         print(Control.COL(93), Control.Q_INS, Control.COL(0))
         print(Control.COL(96), "→", end = ' ')
         try:
-            INS = int(input())
+            INS_INP = input()
             print(Control.COL(0), end = '')
-            if INS != 0 and INS != 1:
-                INS = 1
+            if INS_INP.lower() in ["yes", "y", "1"]:
+                INS = 0
         except ValueError:
             INS = 1
         
@@ -210,6 +237,12 @@ class Control:
 
             if CMD in ["col", "college", "uni", "university", "u"]:
                 INF = Control.CMD_COL(CAREER_TREE, X, MGR)
+            
+            if CMD in ["info", "i"]:
+                print(Control.COL(92), "\n─", MGR.GET_COL_DSC_GPT(), Control.COL(0))
+            
+            if CMD in ["view", "v"]:
+                Control.PRINT(CAREER_TREE, COLLEGE_INFO)
 
             if INF:
                 COLLEGE_INFO.append(INF)
@@ -218,26 +251,8 @@ class Control:
             CMD = input()
             print(Control.COL(0), end = '')
             CMD = CMD.lower()
-
-        print(Control.COL(93), f"\n {Control.DSH('TREE')}", Control.COL(0))
-        print(Control.COL(96), f"{CAREER_TREE.STR().replace('\n', '\n ')}", Control.COL(0))
-        print(Control.COL(93), f"{Control.DSH('')}", Control.COL(0))
-
-        print(Control.COL(93), f"\n {Control.DSH('COLLEGE REPORT')}", Control.COL(0))
-        if not COLLEGE_INFO:
-            print("no colleges\n" + Control.DSH(''))
-        for I in COLLEGE_INFO:
-            print(Control.COL(96), f"NAME:       {I.GET_COL()}", Control.COL(0))
-            print(Control.COL(96), f"LOCATION:   {I.GET_LOC()}", Control.COL(0))
-            print(Control.COL(96), f"DEGREE:     {I.GET_DEG()}", Control.COL(0))
-            print(Control.COL(96), f"REQS:       {I.GET_REQ()}", Control.COL(0))
-            print(Control.COL(96), f"CAREER:     {I.GET_CAR()}", Control.COL(0))
-            print(Control.COL(96), f"JOB:        {I.GET_JOB()}", Control.COL(0))
-            print(Control.COL(96), f"TUITION:    {I.GET_TUT()}", Control.COL(0)) # include total expenses
-            print(Control.COL(96), f"LOAN:       {I.GET_LON()} (avg.)", Control.COL(0)) # WIP
-            print(Control.COL(96), f"REPAY IN:   {I.GET_MTH_PAY()} months (est.)", Control.COL(0)) # WIP
-            # print(Control.COL(93), f"PROGRAMS:   {I.GET_LON_OPP()}", Control.COL(0)) # WIP
-            print(Control.COL(93), Control.DSH(''), Control.COL(0))
+        
+        print(Control.COL(94), "\n ┌ Exported Career Tree & College Report\n └ Thank you for using the Career Tree App!", Control.COL(0))
         
         STR_TIME = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         os.makedirs(os.path.join(PATH, STR_TIME))
