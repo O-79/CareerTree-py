@@ -194,7 +194,7 @@ class CareerTreeGUI(QMainWindow):
     def get_menu(self):
         return (
             "WELCOME TO THE CAREER TREE\n"
-            "USING: gpt turbo 3.5\n"
+            "USING: gpt-3.5-turbo\n"
             "CMD MENU\n"
             "'LOC' / 'l'  →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n"
             "'CAR' / 'c'  →  Select an existing career  / Create a new long branch   with a career, job, college\n"
@@ -209,20 +209,20 @@ class CareerTreeGUI(QMainWindow):
     def get_college_report(self):
         if not self.college_info:
             return "No colleges"
-        report = {"─" * 32}
+        report = "─" * 32 + "\n"
         for i in self.college_info:
             report += (
-                f"NAME:\t\t{i.GET_COL()}\n"
-                f"LOCATION:\t{i.GET_LOC()}\n"
-                f"DEGREE:\t\t{i.GET_DEG()}\n"
-                f"REQS:\t\t{i.GET_REQ()}\n"
-                f"CAREER:\t{i.GET_CAR()}\n"
-                f"JOB:\t\t{i.GET_JOB()}\n"
-                f"TUITION:\t{i.GET_TUT()}\n"
-                f"LOAN:\t\t{i.GET_LON()} (avg.)\n"
-                f"REPAY IN:\t{i.GET_MTH_PAY()} months (est.)\n"
+                f"NAME:       {i.GET_COL()}\n"
+                f"LOCATION:   {i.GET_LOC()}\n"
+                f"DEGREE:     {i.GET_DEG()}\n"
+                f"REQS:       {i.GET_REQ()}\n"
+                f"CAREER:     {i.GET_CAR()}\n"
+                f"JOB:        {i.GET_JOB()}\n"
+                f"TUITION:    {i.GET_TUT()}\n"
+                f"LOAN:       {i.GET_LON()} (avg.)\n"
+                f"REPAY IN:   {i.GET_MTH_PAY()} months (est.)\n"
             )
-            report += {"─" * 32}
+            report += "─" * 32 + "\n"
         return report
 
     def export_data(self):
