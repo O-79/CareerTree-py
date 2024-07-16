@@ -168,7 +168,8 @@ class CareerTreeGUI(QMainWindow):
             self.print_message(f"Question: {question}\nAnswer: {answer}")
 
     def cmd_quit(self):
-        self.export_data()
+        if self.mgr.GET_CAR() is not None:
+            self.export_data()
         QApplication.quit()
 
     def parse_and_get_input(self, prompt, typ):
@@ -208,20 +209,20 @@ class CareerTreeGUI(QMainWindow):
     def get_college_report(self):
         if not self.college_info:
             return "No colleges"
-        report = "--------------------------------\n"
+        report = {"─" * 32}
         for i in self.college_info:
             report += (
-                f"NAME:       {i.GET_COL()}\n"
-                f"LOCATION:   {i.GET_LOC()}\n"
-                f"DEGREE:     {i.GET_DEG()}\n"
-                f"REQS:       {i.GET_REQ()}\n"
-                f"CAREER:     {i.GET_CAR()}\n"
-                f"JOB:        {i.GET_JOB()}\n"
-                f"TUITION:    {i.GET_TUT()}\n"
-                f"LOAN:       {i.GET_LON()} (avg.)\n"
-                f"REPAY IN:   {i.GET_MTH_PAY()} months (est.)\n"
-                "--------------------------------\n"
+                f"NAME:\t\t{i.GET_COL()}\n"
+                f"LOCATION:\t{i.GET_LOC()}\n"
+                f"DEGREE:\t\t{i.GET_DEG()}\n"
+                f"REQS:\t\t{i.GET_REQ()}\n"
+                f"CAREER:\t{i.GET_CAR()}\n"
+                f"JOB:\t\t{i.GET_JOB()}\n"
+                f"TUITION:\t{i.GET_TUT()}\n"
+                f"LOAN:\t\t{i.GET_LON()} (avg.)\n"
+                f"REPAY IN:\t{i.GET_MTH_PAY()} months (est.)\n"
             )
+            report += {"─" * 32}
         return report
 
     def export_data(self):
@@ -241,7 +242,6 @@ class CareerTreeGUI(QMainWindow):
             f_name_colrep = f"Report_{str_time}.txt"
             path_colrep = os.path.join(os.path.join(path, str_time), f_name_colrep)
             with open(path_colrep, 'w', encoding="utf-8") as f:
-                f.write(f"{'─' * 32}\n")
                 f.write(self.get_college_report())
 
         self.print_message(f"Exported Career Tree & College Report to {path}")
