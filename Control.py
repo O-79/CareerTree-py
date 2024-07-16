@@ -201,7 +201,7 @@ class Control:
         print(Control.COL(96), "→", end = ' ')
         try:
             X = int(input())
-            print(Control.COL(0), end = '');
+            print(Control.COL(0), end = '')
             if X < 4:
                 X = 4
             if X > 16:
