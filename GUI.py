@@ -15,6 +15,7 @@ class CareerTreeGUI(QMainWindow):
         self.setWindowTitle("Career Tree")
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
+        self.setFont(QFont('Consolas'))
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
