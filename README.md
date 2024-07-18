@@ -2,7 +2,7 @@
 ![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
 
 <h3>Run in GUI</h3>
-<code>python GUI.py</code>
+<code>python "Career Tree.py"</code>
 
 <h3>Run in CLI</h3>
 <code>python Control.py</code>
