@@ -16,7 +16,7 @@ class CareerTreeGUI(QMainWindow):
         super().__init__()
         self.setWindowTitle("Career Tree")
         self.setGeometry(100, 100, 900, 600)
-        self.setWindowIcon(QIcon('icon_full_borderless_shadow_v1.1'))
+        self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -79,7 +79,8 @@ class CareerTreeGUI(QMainWindow):
 
         self.mgr.INIT(self.x, self.ins)
         self.mgr.SET_LOC("United States of America")
-        self.print_message(self.get_menu())
+        self.print_message("<span style='color: gray;'>WELCOME TO THE CAREER TREE</span>")
+        self.print_message("<span style='color: gray'>USING: gpt-3.5-turbo</span>\n")
 
     def handle_button_click(self):
         sender = self.sender()
@@ -109,11 +110,11 @@ class CareerTreeGUI(QMainWindow):
         elif command == '[theme]':
             global ALT_THEME
             if self.ALT_THEME == 0:
-                self.setWindowIcon(QIcon('icon_full_borderless_shadow_alt_v1.1'))
+                self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt_v1.1'))
                 self.set_style_dark()
                 self.ALT_THEME = 1
             else:
-                self.setWindowIcon(QIcon('icon_full_borderless_shadow_v1.1'))
+                self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
                 self.set_style_light()
                 self.ALT_THEME = 0
 
@@ -228,21 +229,6 @@ class CareerTreeGUI(QMainWindow):
         self.output_text.append("\n" + message)
         self.output_text.moveCursor(QTextCursor.MoveOperation.End)
 
-    def get_menu(self):
-        return (
-            "WELCOME TO THE CAREER TREE\n"
-            "USING: gpt-3.5-turbo\n"
-            "CMD MENU\n"
-            "'LOC' / 'l'  →  [RESETS TREE]              & Create a new full branch   with a location, career, job, college\n"
-            "'CAR' / 'c'  →  Select an existing career  / Create a new long branch   with a career, job, college\n"
-            "'JOB' / 'j'  →  Select an existing job     / Create a new medium branch with a job, college\n"
-            "'COL' / 'u'  →  Select an existing college / Create a new short branch  with a college\n"
-            "'INFO' / 'i' →  More information about currently selected college\n"
-            "'VIEW' / 'v' →  View current Career Tree & College Report\n"
-            "'AI'         →  Ask a custom but related question\n"
-            "'QUIT' / 'q' →  Export Career Tree & College Report, exit application\n"
-        )
-
     def get_college_report(self):
         if not self.college_info:
             return "No colleges"
@@ -295,7 +281,7 @@ class CareerTreeGUI(QMainWindow):
                 background-color: #FFFFFF;
                 border: 1px solid #CCCCCC;
                 padding: 8px;
-                border-radius: 5px;
+                border-radius: 4px;
                 color: #000000;
             }
             QLineEdit:focus {
@@ -305,7 +291,7 @@ class CareerTreeGUI(QMainWindow):
                 background-color: #FFFFFF;
                 border: 1px solid #CCCCCC;
                 padding: 8px;
-                border-radius: 5px;
+                border-radius: 4px;
                 color: #000000;
             }
             QPushButton {
@@ -313,7 +299,7 @@ class CareerTreeGUI(QMainWindow):
                 border: 2px solid #279ABA;
                 color: #000000;
                 padding: 4px;
-                border-radius: 5px;
+                border-radius: 4px;
                 font-weight: bold;
             }
             QPushButton:hover {
@@ -324,7 +310,6 @@ class CareerTreeGUI(QMainWindow):
             }
             QPushButton:disabled {
                 background-color: #BBBBBB;
-                color: #000000;
                 border: 2px solid #999999;
             }
         """
@@ -342,7 +327,7 @@ class CareerTreeGUI(QMainWindow):
                 background-color: #3E3E3E;
                 border: 1px solid #666666;
                 padding: 8px;
-                border-radius: 5px;
+                border-radius: 4px;
                 color: #F0F0F0;
             }
             QLineEdit:focus {
@@ -352,15 +337,15 @@ class CareerTreeGUI(QMainWindow):
                 background-color: #3E3E3E;
                 border: 1px solid #666666;
                 padding: 8px;
-                border-radius: 5px;
+                border-radius: 4px;
                 color: #F0F0F0;
             }
             QPushButton {
                 background-color: #4DDDA6;
                 border: 2px solid #43BA8A;
-                color: #FFFFFF;
+                color: #000000;
                 padding: 2px;
-                border-radius: 5px;
+                border-radius: 4px;
                 font-weight: bold;
             }
             QPushButton:hover {
@@ -371,7 +356,6 @@ class CareerTreeGUI(QMainWindow):
             }
             QPushButton:disabled {
                 background-color: #BBBBBB;
-                color: #FFFFFF;
                 border: 2px solid #999999;
             }
         """
