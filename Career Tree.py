@@ -71,16 +71,15 @@ class CareerTreeGUI(QMainWindow):
     def initialize_app(self):
         ok = False
         while not ok:
-            self.x, ok = QInputDialog.getInt(self, "List size", "Size of list responses from AI ? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
+            self.x, ok = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
 
-        ins_response = QMessageBox.question(self, "Out-of-State Colleges", "Are you interested in out-of-state colleges?",
+        ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Should only in-state colleges be listed?",
                                             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        self.ins = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
+        self.ins = 1 if ins_response == QMessageBox.StandardButton.Yes else 0
 
         self.mgr.INIT(self.x, self.ins)
         self.mgr.SET_LOC("United States of America")
-        self.print_message("<span style='color: gray;'>WELCOME TO THE CAREER TREE</span>")
-        self.print_message("<span style='color: gray'>USING: gpt-3.5-turbo</span>\n")
+        self.print_message("<span style='font-weight: bold; color: gray;'>Welcome to the Career Tree!</span>")
 
     def handle_button_click(self):
         sender = self.sender()
@@ -122,27 +121,27 @@ class CareerTreeGUI(QMainWindow):
         ok = False
         while not ok:
             loc, ok = QInputDialog.getText(self, "Location", "Enter your current / desired location:")
-        if ok:
-            if loc == '':
-                loc = "United States of America"
-            loc_add = loc[0].upper() + loc[1:]
-            self.mgr.SET_LOC(loc_add)
+        
+        if loc == '':
+            loc = "United States of America"
+        loc_add = loc[0].upper() + loc[1:]
+        self.mgr.SET_LOC(loc_add)
 
-            car_add = self.parse_and_get_input("Choose a Career", "CAR")
-            job_add = self.parse_and_get_input("Choose a Job", "JOB")
-            col_add = self.parse_and_get_input("Choose a College", "COL")
+        car_add = self.parse_and_get_input("Choose a Career", "CAR")
+        job_add = self.parse_and_get_input("Choose a Job", "JOB")
+        col_add = self.parse_and_get_input("Choose a College", "COL")
 
-            self.career_tree.ADD(0, loc_add, car_add, job_add, col_add)
-            self.career_tree.ADD(1, loc_add, car_add, job_add, col_add)
-            self.career_tree.ADD(2, loc_add, car_add, job_add, col_add)
+        self.career_tree.ADD(0, loc_add, car_add, job_add, col_add)
+        self.career_tree.ADD(1, loc_add, car_add, job_add, col_add)
+        self.career_tree.ADD(2, loc_add, car_add, job_add, col_add)
 
-            if self.career_tree.ADD(3, loc_add, car_add, job_add, col_add):
-                inf = self.mgr.GET_COL_INF_GPT()
-                if inf:
-                    self.college_info = [inf]
-                self.print_message("Location and related information added successfully.")
-            else:
-                self.print_message("Failed to add location and related information.")
+        if self.career_tree.ADD(3, loc_add, car_add, job_add, col_add):
+            inf = self.mgr.GET_COL_INF_GPT()
+            if inf:
+                self.college_info = [inf]
+            self.print_message("<span style='color: green;'>Branch added.</span>")
+        else:
+            self.print_message("<span style='color: red;'>[ERROR] Branch could not be added.</span>")
 
     def cmd_car(self):
         car_add = self.parse_and_get_input("Choose a Career", "CAR")
@@ -156,9 +155,9 @@ class CareerTreeGUI(QMainWindow):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
-            self.print_message("Career and related information added successfully.")
+            self.print_message("<span style='color: green;'>Branch added.</span>")
         else:
-            self.print_message("Failed to add career and related information.")
+            self.print_message("<span style='color: red;'>[ERROR] Branch could not be added.</span>")
 
     def cmd_job(self):
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
@@ -170,9 +169,9 @@ class CareerTreeGUI(QMainWindow):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
-            self.print_message("Job and related information added successfully.")
+            self.print_message("<span style='color: green;'>Branch added.</span>")
         else:
-            self.print_message("Failed to add job and related information.")
+            self.print_message("<span style='color: red;'>[ERROR] Branch could not be added.</span>")
 
     def cmd_col(self):
         col_add = self.parse_and_get_input("Choose a College", "COL")
@@ -181,9 +180,9 @@ class CareerTreeGUI(QMainWindow):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
-            self.print_message("College information added successfully.")
+            self.print_message("<span style='color: green;'>Branch added.</span>")
         else:
-            self.print_message("Failed to add college information.")
+            self.print_message("<span style='color: red;'>[ERROR] Branch could not be added.</span>")
 
     def cmd_info(self):
         info = self.mgr.GET_COL_DSC_GPT()
@@ -226,7 +225,8 @@ class CareerTreeGUI(QMainWindow):
         return None
 
     def print_message(self, message):
-        self.output_text.append("\n" + message)
+        self.output_text.append("")
+        self.output_text.append(message.strip())
         self.output_text.moveCursor(QTextCursor.MoveOperation.End)
 
     def get_college_report(self):
