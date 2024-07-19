@@ -4,7 +4,7 @@
 todo: export in markdown, include job salaries somewhere
 
 <h3>Run in GUI</h3>
-<code>python "Career Tree.py"</code>
+<code>python CareerTree.py</code>
 
 <h3>Run in CLI</h3>
 <code>python Control.py</code>
