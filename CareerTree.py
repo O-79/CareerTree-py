@@ -282,13 +282,13 @@ class CareerTree(QMainWindow):
         str_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         os.makedirs(os.path.join(path, str_time))
 
-        f_name_ctree = f"Tree_{str_time}.txt"
+        f_name_ctree = f"Tree_{str_time}.md"
         path_ctree = os.path.join(os.path.join(path, str_time), f_name_ctree)
         with open(path_ctree, 'w', encoding="utf-8") as f:
             f.write(f"{'─' * 32}\n{self.career_tree.STR()}\n{'─' * 32}")
 
         if self.college_info:
-            f_name_colrep = f"Report_{str_time}.txt"
+            f_name_colrep = f"Report_{str_time}.md"
             path_colrep = os.path.join(os.path.join(path, str_time), f_name_colrep)
             with open(path_colrep, 'w', encoding="utf-8") as f:
                 f.write(self.get_college_report())
