@@ -266,14 +266,14 @@ class Control:
         STR_TIME = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         os.makedirs(os.path.join(PATH, STR_TIME))
         
-        F_NAME_CTREE = "Tree_" + STR_TIME + ".txt"
+        F_NAME_CTREE = "Tree_" + STR_TIME + ".md"
         PATH_CTREE = os.path.join(os.path.join(PATH, STR_TIME), F_NAME_CTREE)
         with open(PATH_CTREE, 'w', encoding="utf-8") as F:
             F.write(f"{Control.DSH('TREE')}\n{CAREER_TREE.STR()}\n{Control.DSH('')}")
             F.close()
         
         if COLLEGE_INFO:
-            F_NAME_COLREP = "Report_" + STR_TIME + ".txt"
+            F_NAME_COLREP = "Report_" + STR_TIME + ".md"
             PATH_COLREP = os.path.join(os.path.join(PATH, STR_TIME), F_NAME_COLREP)
             with open(PATH_COLREP, 'w', encoding="utf-8") as F:
                 F.write(f"{Control.DSH('COLLEGE REPORT')}\n")

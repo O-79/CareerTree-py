@@ -94,20 +94,20 @@ class CTree:
 
     def STR(self):
         s = []
-        s.append(f"LOC {self.ROT.GET()}")
+        s.append(f"""LOC {self.ROT.GET()}""")
         for A in self.ROT.GET_ARR():
             if A == self.ROT.GET_ARR()[-1]:
-                s.append(f" └── CAR {A.GET()}")
+                s.append(f""" └── CAR {A.GET()}""")
             else:
-                s.append(f" ├── CAR {A.GET()}")
+                s.append(f""" ├── CAR {A.GET()}""")
             for B in A.GET_ARR():
                 if B == A.GET_ARR()[-1]:
-                    s.append(f"      └── JOB {B.GET()}")
+                    s.append(f"""      └── JOB {B.GET()}""")
                 else:
-                    s.append(f"      ├── JOB {B.GET()}")
+                    s.append(f"""      ├── JOB {B.GET()}""")
                 for C in B.GET_ARR():
                     if C == B.GET_ARR()[-1]:
-                        s.append(f"           └── COL {C.GET()}")
+                        s.append(f"""           └── COL {C.GET()}""")
                     else:
-                        s.append(f"           ├── COL {C.GET()}")
-        return "\n".join(s)
+                        s.append(f"""           ├── COL {C.GET()}""")
+        return """<br/>""".join(s)
