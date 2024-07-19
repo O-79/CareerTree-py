@@ -1,6 +1,8 @@
 # Career Tree
 ![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_base_black_v1.1.png?raw=true)<em> Document Author: Adi</em>
 
+todo: 2 read-only text areas side by side: left is 'terminal', right is career tree (& college report ?)
+
 <h3>Run in GUI</h3>
 <code>python "Career Tree.py"</code>
 
