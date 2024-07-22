@@ -48,13 +48,18 @@ class CareerTree(QMainWindow):
         top_layout = QHBoxLayout(top_widget)
         top_layout.addStretch(1)
         
+        self.theme_button = QPushButton('Colleges')
+        self.theme_button.setFixedSize(90, 30)
+        top_layout.addWidget(self.theme_button)
+        self.theme_button.clicked.connect(self.handle_button_click)
+        
         self.theme_button = QPushButton('Size')
-        self.theme_button.setFixedSize(60, 30)
+        self.theme_button.setFixedSize(55, 30)
         top_layout.addWidget(self.theme_button)
         self.theme_button.clicked.connect(self.handle_button_click)
         
         self.theme_button = QPushButton('Theme')
-        self.theme_button.setFixedSize(70, 30)
+        self.theme_button.setFixedSize(65, 30)
         top_layout.addWidget(self.theme_button)
         self.theme_button.clicked.connect(self.handle_button_click)
 
@@ -95,11 +100,7 @@ class CareerTree(QMainWindow):
         self.initialize_app()
 
     def initialize_app(self):
-        ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Should only in-state colleges be listed?",
-                                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        self.INS = 1 if ins_response == QMessageBox.StandardButton.Yes else 0
-
-        self.MGR.__init__(10, self.INS)
+        self.MGR.__init__(10, 1)
         self.MGR.SET('LOC', "United States of America")
         self.print_message("""**Welcome to the** [**Career Tree!**](https://github.com/O-79/CareerTree-py/)""")
 
@@ -128,6 +129,11 @@ class CareerTree(QMainWindow):
             self.cmd_ai()
         elif command == 'quit':
             self.cmd_quit()
+        elif command == 'colleges':
+            ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
+                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            self.INS = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
+            self.MGR.SET_INS(self.INS)
         elif command == 'size':
             ok = False
             while not ok:

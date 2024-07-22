@@ -47,6 +47,9 @@ class Manager:
     def SET_X(self, X):
         self.X = X
 
+    def SET_INS(self, INS):
+        self.INS = INS
+
     def GET(self, KEY):
         return self.CUR.get(KEY)
 
