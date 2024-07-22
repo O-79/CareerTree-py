@@ -135,9 +135,7 @@ class CareerTree(QMainWindow):
             self.INS = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
             self.MGR.SET_INS(self.INS)
         elif command == 'size':
-            ok = False
-            while not ok:
-                self.X, ok = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
+            self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
             self.MGR.SET_X(self.X)
         elif command == 'theme':
             global ALT_THEME
