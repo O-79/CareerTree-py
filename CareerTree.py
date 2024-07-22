@@ -48,8 +48,13 @@ class CareerTree(QMainWindow):
         top_layout = QHBoxLayout(top_widget)
         top_layout.addStretch(1)
         
-        self.theme_button = QPushButton('[Theme]')
-        self.theme_button.setFixedSize(75, 30)
+        self.theme_button = QPushButton('Size')
+        self.theme_button.setFixedSize(60, 30)
+        top_layout.addWidget(self.theme_button)
+        self.theme_button.clicked.connect(self.handle_button_click)
+        
+        self.theme_button = QPushButton('Theme')
+        self.theme_button.setFixedSize(70, 30)
         top_layout.addWidget(self.theme_button)
         self.theme_button.clicked.connect(self.handle_button_click)
 
@@ -83,23 +88,19 @@ class CareerTree(QMainWindow):
         self.buttons['INFO'].setEnabled(False)
         self.buttons['VIEW'].setEnabled(False)
 
-        self.mgr = Manager(10, 1) # DEF : X = 10 , IN-STATE
+        self.MGR = Manager(10, 1) # DEF : X = 10 , IN-STATE
         self.career_tree = CTree()
         self.college_info: List[Manager.College_Info] = []
 
         self.initialize_app()
 
     def initialize_app(self):
-        ok = False
-        while not ok:
-            self.x, ok = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
-
         ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Should only in-state colleges be listed?",
                                             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        self.ins = 1 if ins_response == QMessageBox.StandardButton.Yes else 0
+        self.INS = 1 if ins_response == QMessageBox.StandardButton.Yes else 0
 
-        self.mgr.__init__(self.x, self.ins)
-        self.mgr.SET('LOC', "United States of America")
+        self.MGR.__init__(10, self.INS)
+        self.MGR.SET('LOC', "United States of America")
         self.print_message("""**Welcome to the** [**Career Tree!**](https://github.com/O-79/CareerTree-py/)""")
 
     def handle_button_click(self):
@@ -127,7 +128,12 @@ class CareerTree(QMainWindow):
             self.cmd_ai()
         elif command == 'quit':
             self.cmd_quit()
-        elif command == '[theme]':
+        elif command == 'size':
+            ok = False
+            while not ok:
+                self.X, ok = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
+            self.MGR.SET_X(self.X)
+        elif command == 'theme':
             global ALT_THEME
             if self.ALT_THEME == 0:
                 self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt_v1.1'))
@@ -146,7 +152,7 @@ class CareerTree(QMainWindow):
         if loc == '':
             loc = "United States of America"
         loc_add = loc[0].upper() + loc[1:]
-        self.mgr.SET('LOC', loc_add)
+        self.MGR.SET('LOC', loc_add)
 
         car_add = self.parse_and_get_input("Choose a Career", "CAR")
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
@@ -157,7 +163,7 @@ class CareerTree(QMainWindow):
         self.career_tree.ADD(2, loc_add, car_add, job_add, col_add)
 
         if self.career_tree.ADD(3, loc_add, car_add, job_add, col_add):
-            inf = self.mgr.GET_COL_INF_GPT()
+            inf = self.MGR.GET_COL_INF_GPT()
             if inf:
                 self.college_info = [inf]
             self.print_message("""*Branch added.*""")
@@ -169,11 +175,11 @@ class CareerTree(QMainWindow):
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        self.career_tree.ADD(1, self.mgr.GET('LOC'), car_add, job_add, col_add)
-        self.career_tree.ADD(2, self.mgr.GET('LOC'), car_add, job_add, col_add)
+        self.career_tree.ADD(1, self.MGR.GET('LOC'), car_add, job_add, col_add)
+        self.career_tree.ADD(2, self.MGR.GET('LOC'), car_add, job_add, col_add)
 
-        if self.career_tree.ADD(3, self.mgr.GET('LOC'), car_add, job_add, col_add):
-            inf = self.mgr.GET_COL_INF_GPT()
+        if self.career_tree.ADD(3, self.MGR.GET('LOC'), car_add, job_add, col_add):
+            inf = self.MGR.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
             self.print_message("""*Branch added.*""")
@@ -184,10 +190,10 @@ class CareerTree(QMainWindow):
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        self.career_tree.ADD(2, self.mgr.GET('LOC'), self.mgr.GET('CAR'), job_add, col_add)
+        self.career_tree.ADD(2, self.MGR.GET('LOC'), self.MGR.GET('CAR'), job_add, col_add)
 
-        if self.career_tree.ADD(3, self.mgr.GET('LOC'), self.mgr.GET('CAR'), job_add, col_add):
-            inf = self.mgr.GET_COL_INF_GPT()
+        if self.career_tree.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), job_add, col_add):
+            inf = self.MGR.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
             self.print_message("""*Branch added.*""")
@@ -197,8 +203,8 @@ class CareerTree(QMainWindow):
     def cmd_col(self):
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        if self.career_tree.ADD(3, self.mgr.GET('LOC'), self.mgr.GET('CAR'), self.mgr.GET('JOB'), col_add):
-            inf = self.mgr.GET_COL_INF_GPT()
+        if self.career_tree.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), self.MGR.GET('JOB'), col_add):
+            inf = self.MGR.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
             self.print_message("""*Branch added.*""")
@@ -206,7 +212,7 @@ class CareerTree(QMainWindow):
             self.print_message("""*Branch selected.*""")
 
     def cmd_info(self):
-        info = self.mgr.GET_COL_DSC_GPT()
+        info = self.MGR.GET_COL_DSC_GPT()
         self.print_message(f"""**College Information:**
                                <br/>{info}""")
 
@@ -225,17 +231,17 @@ class CareerTree(QMainWindow):
             if question == '':
                 self.print_message("""**Answer:**   Please ask a related question.""")
             else:
-                answer = self.mgr.GET_EXT_GPT(question)
+                answer = self.MGR.GET_EXT_GPT(question)
                 self.print_message(f"""**Question:** {question.capitalize() + '.'}
                                        <br/>**Answer:**   {answer}""")
 
     def cmd_quit(self):
-        if self.mgr.GET('CAR') is not None:
+        if self.MGR.GET('CAR') is not None:
             self.export_data()
         QApplication.quit()
 
     def parse_and_get_input(self, prompt, typ):
-        options = self.mgr.GET_CAR_GPT() if typ == "CAR" else self.mgr.GET_JOB_GPT() if typ == "JOB" else self.mgr.GET_COL_GPT()
+        options = self.MGR.GET_CAR_GPT() if typ == "CAR" else self.MGR.GET_JOB_GPT() if typ == "JOB" else self.MGR.GET_COL_GPT()
         options = re.sub(r'[0-9]+', '', options).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
         options = options.split('|')
         ok = False
@@ -243,13 +249,13 @@ class CareerTree(QMainWindow):
             item, ok = QInputDialog.getItem(self, prompt, "Select an option:", options, 0, False)
         if ok:
             if typ == "CAR":
-                self.mgr.SET('CAR', item)
+                self.MGR.SET('CAR', item)
             elif typ == "JOB":
-                self.mgr.SET('JOB', item)
-                self.mgr.GET_PAY_GPT()
+                self.MGR.SET('JOB', item)
+                self.MGR.GET_PAY_GPT()
             elif typ == "COL":
-                self.mgr.SET('COL', item)
-                self.mgr.GET_DEG_GPT()
+                self.MGR.SET('COL', item)
+                self.MGR.GET_DEG_GPT()
             return item
         return None
 
