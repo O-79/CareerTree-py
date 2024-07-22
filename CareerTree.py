@@ -14,7 +14,7 @@ class CareerTree(QMainWindow):
     ALT_THEME = 0;
     
     class TextDialog(QDialog):
-        def __init__(self, text, parent=None):
+        def __init__(self, text, parent = None):
             super().__init__(parent)
             self.setWindowTitle("Career Tree & College Report")
             self.setGeometry(100, 100, 600, 400)
@@ -83,7 +83,7 @@ class CareerTree(QMainWindow):
         self.buttons['INFO'].setEnabled(False)
         self.buttons['VIEW'].setEnabled(False)
 
-        self.mgr = Manager()
+        self.mgr = Manager(10, 1) # DEF : X = 10 , IN-STATE
         self.career_tree = CTree()
         self.college_info: List[Manager.College_Info] = []
 
@@ -98,8 +98,8 @@ class CareerTree(QMainWindow):
                                             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         self.ins = 1 if ins_response == QMessageBox.StandardButton.Yes else 0
 
-        self.mgr.INIT(self.x, self.ins)
-        self.mgr.SET_LOC("United States of America")
+        self.mgr.__init__(self.x, self.ins)
+        self.mgr.SET('LOC', "United States of America")
         self.print_message("""**Welcome to the** [**Career Tree!**](https://github.com/O-79/CareerTree-py/)""")
 
     def handle_button_click(self):
@@ -146,7 +146,7 @@ class CareerTree(QMainWindow):
         if loc == '':
             loc = "United States of America"
         loc_add = loc[0].upper() + loc[1:]
-        self.mgr.SET_LOC(loc_add)
+        self.mgr.SET('LOC', loc_add)
 
         car_add = self.parse_and_get_input("Choose a Career", "CAR")
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
@@ -169,10 +169,10 @@ class CareerTree(QMainWindow):
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        self.career_tree.ADD(1, self.mgr.GET_LOC(), car_add, job_add, col_add)
-        self.career_tree.ADD(2, self.mgr.GET_LOC(), car_add, job_add, col_add)
+        self.career_tree.ADD(1, self.mgr.GET('LOC'), car_add, job_add, col_add)
+        self.career_tree.ADD(2, self.mgr.GET('LOC'), car_add, job_add, col_add)
 
-        if self.career_tree.ADD(3, self.mgr.GET_LOC(), car_add, job_add, col_add):
+        if self.career_tree.ADD(3, self.mgr.GET('LOC'), car_add, job_add, col_add):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
@@ -184,9 +184,9 @@ class CareerTree(QMainWindow):
         job_add = self.parse_and_get_input("Choose a Job", "JOB")
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        self.career_tree.ADD(2, self.mgr.GET_LOC(), self.mgr.GET_CAR(), job_add, col_add)
+        self.career_tree.ADD(2, self.mgr.GET('LOC'), self.mgr.GET('CAR'), job_add, col_add)
 
-        if self.career_tree.ADD(3, self.mgr.GET_LOC(), self.mgr.GET_CAR(), job_add, col_add):
+        if self.career_tree.ADD(3, self.mgr.GET('LOC'), self.mgr.GET('CAR'), job_add, col_add):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
@@ -197,7 +197,7 @@ class CareerTree(QMainWindow):
     def cmd_col(self):
         col_add = self.parse_and_get_input("Choose a College", "COL")
 
-        if self.career_tree.ADD(3, self.mgr.GET_LOC(), self.mgr.GET_CAR(), self.mgr.GET_JOB(), col_add):
+        if self.career_tree.ADD(3, self.mgr.GET('LOC'), self.mgr.GET('CAR'), self.mgr.GET('JOB'), col_add):
             inf = self.mgr.GET_COL_INF_GPT()
             if inf:
                 self.college_info.append(inf)
@@ -230,7 +230,7 @@ class CareerTree(QMainWindow):
                                        <br/>**Answer:**   {answer}""")
 
     def cmd_quit(self):
-        if self.mgr.GET_CAR() is not None:
+        if self.mgr.GET('CAR') is not None:
             self.export_data()
         QApplication.quit()
 
@@ -243,11 +243,13 @@ class CareerTree(QMainWindow):
             item, ok = QInputDialog.getItem(self, prompt, "Select an option:", options, 0, False)
         if ok:
             if typ == "CAR":
-                self.mgr.SET_CAR(item)
+                self.mgr.SET('CAR', item)
             elif typ == "JOB":
-                self.mgr.SET_JOB(item)
+                self.mgr.SET('JOB', item)
+                self.mgr.GET_PAY_GPT()
             elif typ == "COL":
-                self.mgr.SET_COL(item)
+                self.mgr.SET('COL', item)
+                self.mgr.GET_DEG_GPT()
             return item
         return None
 
@@ -261,14 +263,16 @@ class CareerTree(QMainWindow):
         report = """─""" * 32 + """<br/>"""
         for i in self.college_info:
             report += (
-                f"""NAME:       {i.GET_COL()}<br/>"""
-                f"""LOCATION:   {i.GET_LOC()}<br/>"""
-                f"""DEGREE:     {i.GET_DEG()}<br/>"""
-                f"""REQS:       {i.GET_REQ()}<br/>"""
-                f"""CAREER:     {i.GET_CAR()}<br/>"""
-                f"""JOB:        {i.GET_JOB()}<br/>"""
-                f"""TUITION:    {i.GET_TUT()}<br/>"""
-                f"""LOAN:       {i.GET_LON()} (avg.)<br/>"""
+                f"""NAME:       {i.GET('COL')}<br/>"""
+                f"""LOCATION:   {i.GET('LOC')}<br/>"""
+                f"""DEGREE:     {i.GET('DEG')}<br/>"""
+                f"""REQS:       {i.GET('REQ')}<br/>"""
+                f"""CAREER:     {i.GET('CAR')}<br/>"""
+                f"""JOB:        {i.GET('JOB')}<br/>"""
+                f"""PAY ENTRY:  {i.GET('PAY_LOW')}<br/>"""
+                f"""PAY SENIOR: {i.GET('PAY_UPP')}<br/>"""
+                f"""TUITION:    {i.GET('TUT')}<br/>"""
+                f"""LOAN:       {i.GET('LON')} (avg.)<br/>"""
                 f"""REPAY IN:   {i.GET_MTH_PAY()} months (est.)<br/>"""
             )
             report += """─""" * 32 + """<br/>"""
