@@ -116,12 +116,17 @@ class CareerTree(QMainWindow):
         CMD = SDR.text().split()[0].lower()
 
         if CMD == 'location':
-            self.CMD_LOC()
-            self.BUT['CAR'].setEnabled(True)
-            self.BUT['JOB'].setEnabled(True)
-            self.BUT['COL'].setEnabled(True)
-            self.BUT['INFO'].setEnabled(True)
-            self.BUT['VIEW'].setEnabled(True)
+            self.BUT['CAR'].setEnabled(False)
+            self.BUT['JOB'].setEnabled(False)
+            self.BUT['COL'].setEnabled(False)
+            self.BUT['INFO'].setEnabled(False)
+            self.BUT['VIEW'].setEnabled(False)
+            if self.CMD_LOC() == True:
+                self.BUT['CAR'].setEnabled(True)
+                self.BUT['JOB'].setEnabled(True)
+                self.BUT['COL'].setEnabled(True)
+                self.BUT['INFO'].setEnabled(True)
+                self.BUT['VIEW'].setEnabled(True)
         elif CMD == 'career':
             self.CMD_CAR()
         elif CMD == 'job':
@@ -146,30 +151,30 @@ class CareerTree(QMainWindow):
             self.CMD_THEME()
 
     def CMD_LOC(self):
-        ok = False
-        while not ok:
-            LOC, ok = QInputDialog.getText(self, "Location", "Enter your current / desired location:")
-        
-        if LOC == '':
-            LOC = "United States of America"
-        LOC_ADD = LOC[0].upper() + LOC[1:]
-        self.MGR.SET('LOC', LOC_ADD)
+        LOC, ok = QInputDialog.getText(self, "Location", "Enter your current / desired location:")
+        if ok:
+            if LOC == '':
+                LOC = "United States of America"
+            LOC_ADD = LOC[0].upper() + LOC[1:]
+            self.MGR.SET('LOC', LOC_ADD)
 
-        CAR_ADD = self.PARSE("Choose a Career", "CAR")
-        JOB_ADD = self.PARSE("Choose a Job", "JOB")
-        COL_ADD = self.PARSE("Choose a College", "COL")
+            CAR_ADD = self.PARSE("Choose a Career", "CAR")
+            JOB_ADD = self.PARSE("Choose a Job", "JOB")
+            COL_ADD = self.PARSE("Choose a College", "COL")
 
-        self.CAREER_TREE.ADD(0, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
-        self.CAREER_TREE.ADD(1, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
-        self.CAREER_TREE.ADD(2, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
+            self.CAREER_TREE.ADD(0, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
+            self.CAREER_TREE.ADD(1, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
+            self.CAREER_TREE.ADD(2, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
 
-        if self.CAREER_TREE.ADD(3, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD):
-            INF = self.MGR.GET_COL_INF_GPT()
-            if INF:
-                self.COLLEGE_INFO = [INF]
-            self.PRINT("""*Branch added.*""")
-        else:
-            self.PRINT("""*Branch selected.*""")
+            if self.CAREER_TREE.ADD(3, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD):
+                INF = self.MGR.GET_COL_INF_GPT()
+                if INF:
+                    self.COLLEGE_INFO = [INF]
+                self.PRINT("""*Branch added.*""")
+            else:
+                self.PRINT("""*Branch selected.*""")
+            return True
+        return False
 
     def CMD_CAR(self):
         CAR_ADD = self.PARSE("Choose a Career", "CAR")
