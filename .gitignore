@@ -1,11 +1,6 @@
 # Testing
 test*.py
-
-# Colors
-palette*.*
-
-# Output
 output/
 
 # Secrets
-key.txt
+key.*
