@@ -12,7 +12,7 @@ class Control:
         os.system("clear")
     
     @staticmethod
-    def COL(TYP) -> str:
+    def COL(TYP):
         return f"\33[{TYP}m"
     
     MENU = "\n WELCOME TO THE CAREER TREE\n" \
@@ -173,7 +173,7 @@ class Control:
             print(Control.COL(93), Control.DSH(''), Control.COL(0))
 
     @staticmethod
-    def DSH(TXT: str) -> str:
+    def DSH(TXT: str):
         if len(TXT) > 32:
             return "────────────────────────────────"
 

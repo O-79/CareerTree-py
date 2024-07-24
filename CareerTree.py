@@ -18,7 +18,7 @@ class CareerTree(QMainWindow):
             super().__init__(parent)
             self.setWindowTitle("Career Tree & College Report")
             self.setGeometry(100, 100, 600, 400)
-            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
+            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
 
             layout = QVBoxLayout(self)
 
@@ -37,7 +37,7 @@ class CareerTree(QMainWindow):
         super().__init__()
         self.setWindowTitle("Career Tree")
         self.setGeometry(50, 50, 900, 600)
-        self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
+        self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -46,22 +46,33 @@ class CareerTree(QMainWindow):
         
         top_widget = QWidget()
         top_layout = QHBoxLayout(top_widget)
+        
+        self.top_button = QPushButton('Quit')
+        self.top_button.setFixedSize(55, 30)
+        top_layout.addWidget(self.top_button)
+        self.top_button.clicked.connect(self.handle_button_click)
+        
+        self.top_button = QPushButton('Export')
+        self.top_button.setFixedSize(70, 30)
+        top_layout.addWidget(self.top_button)
+        self.top_button.clicked.connect(self.handle_button_click)
+        
         top_layout.addStretch(1)
         
-        self.theme_button = QPushButton('Colleges')
-        self.theme_button.setFixedSize(90, 30)
-        top_layout.addWidget(self.theme_button)
-        self.theme_button.clicked.connect(self.handle_button_click)
+        self.top_button = QPushButton('Colleges')
+        self.top_button.setFixedSize(90, 30)
+        top_layout.addWidget(self.top_button)
+        self.top_button.clicked.connect(self.handle_button_click)
         
-        self.theme_button = QPushButton('Size')
-        self.theme_button.setFixedSize(55, 30)
-        top_layout.addWidget(self.theme_button)
-        self.theme_button.clicked.connect(self.handle_button_click)
+        self.top_button = QPushButton('Size')
+        self.top_button.setFixedSize(55, 30)
+        top_layout.addWidget(self.top_button)
+        self.top_button.clicked.connect(self.handle_button_click)
         
-        self.theme_button = QPushButton('Theme')
-        self.theme_button.setFixedSize(65, 30)
-        top_layout.addWidget(self.theme_button)
-        self.theme_button.clicked.connect(self.handle_button_click)
+        self.top_button = QPushButton('Theme')
+        self.top_button.setFixedSize(65, 30)
+        top_layout.addWidget(self.top_button)
+        self.top_button.clicked.connect(self.handle_button_click)
 
         main_layout.addWidget(top_widget)
 
@@ -79,7 +90,6 @@ class CareerTree(QMainWindow):
             'INFO': QPushButton('Info (current college description)'),
             'VIEW': QPushButton('View (Career Tree and College Report)'),
             'AI': QPushButton('AI (custom question)'),
-            'QUIT': QPushButton('Quit (and export)')
         }
 
         for button in self.buttons.values():
@@ -100,9 +110,12 @@ class CareerTree(QMainWindow):
         self.initialize_app()
 
     def initialize_app(self):
+        self.str_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         self.MGR.__init__(10, 1)
         self.MGR.SET('LOC', "United States of America")
         self.print_message("""**Welcome to the** [**Career Tree!**](https://github.com/O-79/CareerTree-py/)""")
+
+    ################################################################
 
     def handle_button_click(self):
         sender = self.sender()
@@ -127,26 +140,16 @@ class CareerTree(QMainWindow):
             self.cmd_view()
         elif command == 'ai':
             self.cmd_ai()
+        elif command == 'export':
+            self.cmd_export()
         elif command == 'quit':
             self.cmd_quit()
         elif command == 'colleges':
-            ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
-                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-            self.INS = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
-            self.MGR.SET_INS(self.INS)
+            self.cmd_ins()
         elif command == 'size':
-            self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
-            self.MGR.SET_X(self.X)
+            self.cmd_size()
         elif command == 'theme':
-            global ALT_THEME
-            if self.ALT_THEME == 0:
-                self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt_v1.1'))
-                self.setStyleSheet(Styles.DARK)
-                self.ALT_THEME = 1
-            else:
-                self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_v1.1'))
-                self.setStyleSheet(Styles.LGHT)
-                self.ALT_THEME = 0
+            self.cmd_theme()
 
     def cmd_loc(self):
         ok = False
@@ -239,10 +242,35 @@ class CareerTree(QMainWindow):
                 self.print_message(f"""**Question:** {question.capitalize() + '.'}
                                        <br/>**Answer:**   {answer}""")
 
-    def cmd_quit(self):
+    def cmd_export(self):
         if self.MGR.GET('CAR') is not None:
             self.export_data()
+
+    def cmd_quit(self):
         QApplication.quit()
+
+    def cmd_ins(self):
+        ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
+                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        self.INS = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
+        self.MGR.SET_INS(self.INS)
+
+    def cmd_size(self):
+        self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
+        self.MGR.SET_X(self.X)
+
+    def cmd_theme(self):
+        global ALT_THEME
+        if self.ALT_THEME == 0:
+            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt'))
+            self.setStyleSheet(Styles.DARK)
+            self.ALT_THEME = 1
+        else:
+            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
+            self.setStyleSheet(Styles.LGHT)
+            self.ALT_THEME = 0
+
+    ################################################################
 
     def parse_and_get_input(self, prompt, typ):
         options = self.MGR.GET_CAR_GPT() if typ == "CAR" else self.MGR.GET_JOB_GPT() if typ == "JOB" else self.MGR.GET_COL_GPT()
@@ -293,21 +321,21 @@ class CareerTree(QMainWindow):
         if not os.path.exists(path):
             os.makedirs(path)
 
-        str_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
-        os.makedirs(os.path.join(path, str_time))
+        if not os.path.exists(os.path.join(path, self.str_time)):
+            os.makedirs(os.path.join(path, self.str_time))
 
-        f_name_ctree = f"Tree_{str_time}.md"
-        path_ctree = os.path.join(os.path.join(path, str_time), f_name_ctree)
+        f_name_ctree = f"Tree_{self.str_time}.txt"
+        path_ctree = os.path.join(os.path.join(path, self.str_time), f_name_ctree)
         with open(path_ctree, 'w', encoding="utf-8") as f:
-            f.write(f"{'─' * 32}\n{self.career_tree.STR()}\n{'─' * 32}")
+            f.write(f"{'─' * 32}\n{self.career_tree.STR().replace("<br/>", '\n')}\n{'─' * 32}")
 
         if self.college_info:
-            f_name_colrep = f"Report_{str_time}.md"
-            path_colrep = os.path.join(os.path.join(path, str_time), f_name_colrep)
+            f_name_colrep = f"Report_{self.str_time}.txt"
+            path_colrep = os.path.join(os.path.join(path, self.str_time), f_name_colrep)
             with open(path_colrep, 'w', encoding="utf-8") as f:
-                f.write(self.get_college_report())
+                f.write(self.get_college_report().replace("<br/>", '\n'))
 
-        self.print_message(f"""Exported Career Tree & College Report to {path}""")
+        self.print_message(f"""*Exported Career Tree & College Report to {path}*""")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

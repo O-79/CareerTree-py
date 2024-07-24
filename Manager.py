@@ -81,10 +81,10 @@ class Manager:
         self.CUR['DEG'] = GPT.GET_ANS(f"just state the full name of the specific degree needed to get a job as a {self.CUR['JOB']}, nothing else")
         return self.CUR['DEG']
 
-    def GET_COL_DSC_GPT(self) -> str:
+    def GET_COL_DSC_GPT(self):
         return GPT.GET_ANS(f"tell me more about {self.CUR['COL']}")
     
-    def GET_EXT_GPT(self, Q) -> str:
+    def GET_EXT_GPT(self, Q):
         return GPT.GET_ANS_X("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7)
 
     def GET_COL_INF_GPT(self):
@@ -121,5 +121,5 @@ class Manager:
         
         return INF
 
-    def INT(self, XYZ: str) -> int:
+    def INT(self, XYZ: str):
         return int(float(XYZ.replace('$', '').replace(',', '').replace('USD', '').strip()))
