@@ -22,14 +22,14 @@ class CareerTree(QMainWindow):
 
             layout = QVBoxLayout(self)
 
-            self.text_edit = QTextEdit()
-            self.text_edit.setReadOnly(True)
-            self.text_edit.setMarkdown(text)
-            layout.addWidget(self.text_edit)
+            self.TXT_MAIN = QTextEdit()
+            self.TXT_MAIN.setReadOnly(True)
+            self.TXT_MAIN.setMarkdown(text)
+            layout.addWidget(self.TXT_MAIN)
 
-            ok_button = QPushButton("OK")
-            ok_button.clicked.connect(self.accept)
-            layout.addWidget(ok_button)
+            BUT_OK = QPushButton("OK")
+            BUT_OK.clicked.connect(self.accept)
+            layout.addWidget(BUT_OK)
             
             self.setStyleSheet(Styles.MISC_0)
     
@@ -39,51 +39,43 @@ class CareerTree(QMainWindow):
         self.setGeometry(50, 50, 900, 600)
         self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        self.WGT_CTR = QWidget()
+        self.setCentralWidget(self.WGT_CTR)
         
-        main_layout = QVBoxLayout(self.central_widget)
+        LAY_MAIN = QVBoxLayout(self.WGT_CTR)
         
-        top_widget = QWidget()
-        top_layout = QHBoxLayout(top_widget)
+        WGT_TOP = QWidget()
+        LAY_TOP = QHBoxLayout(WGT_TOP)
         
-        self.top_button = QPushButton('Quit')
-        self.top_button.setFixedSize(55, 30)
-        top_layout.addWidget(self.top_button)
-        self.top_button.clicked.connect(self.handle_button_click)
+        self.BUT_TOP = {
+            'QUIT': QPushButton('Quit'),
+            'EXP': QPushButton('Export'),
+            'INS': QPushButton('Colleges'),
+            'SIZE': QPushButton('Size'),
+            'THEME': QPushButton('Theme'),
+        }
         
-        self.top_button = QPushButton('Export')
-        self.top_button.setFixedSize(70, 30)
-        top_layout.addWidget(self.top_button)
-        self.top_button.clicked.connect(self.handle_button_click)
+        self.BUT_TOP['QUIT'].setFixedSize(55, 30)
+        self.BUT_TOP['EXP'].setFixedSize(70, 30)
+        #
+        self.BUT_TOP['INS'].setFixedSize(90, 30)
+        self.BUT_TOP['SIZE'].setFixedSize(55, 30)
+        self.BUT_TOP['THEME'].setFixedSize(65, 30)
         
-        top_layout.addStretch(1)
-        
-        self.top_button = QPushButton('Colleges')
-        self.top_button.setFixedSize(90, 30)
-        top_layout.addWidget(self.top_button)
-        self.top_button.clicked.connect(self.handle_button_click)
-        
-        self.top_button = QPushButton('Size')
-        self.top_button.setFixedSize(55, 30)
-        top_layout.addWidget(self.top_button)
-        self.top_button.clicked.connect(self.handle_button_click)
-        
-        self.top_button = QPushButton('Theme')
-        self.top_button.setFixedSize(65, 30)
-        top_layout.addWidget(self.top_button)
-        self.top_button.clicked.connect(self.handle_button_click)
+        for i, BUT_TOP in enumerate(self.BUT_TOP.values()):
+            if i == 2:
+                LAY_TOP.addStretch(1)
+            LAY_TOP.addWidget(BUT_TOP)
+            BUT_TOP.clicked.connect(self.BUT_CLICK)
 
-        main_layout.addWidget(top_widget)
+        LAY_MAIN.addWidget(WGT_TOP)
 
-        self.output_text = QTextEdit()
-        self.output_text.setReadOnly(True)
-        main_layout.addWidget(self.output_text)
-        
-        self.setStyleSheet(Styles.LGHT)
+        self.TXT_MAIN = QTextEdit()
+        self.TXT_MAIN.setReadOnly(True)
+        LAY_MAIN.addWidget(self.TXT_MAIN)
 
-        self.buttons = {
-            'LOC': QPushButton('Location (add)'),
+        self.BUT = {
+            'LOC': QPushButton('Location (add and reset tree)'),
             'CAR': QPushButton('Career (add / select existing)'),
             'JOB': QPushButton('Job (add / select existing)'),
             'COL': QPushButton('College (add / select existing)'),
@@ -92,139 +84,141 @@ class CareerTree(QMainWindow):
             'AI': QPushButton('AI (custom question)'),
         }
 
-        for button in self.buttons.values():
-            button.setFixedHeight(30)
-            main_layout.addWidget(button)
-            button.clicked.connect(self.handle_button_click)
+        for BUT in self.BUT.values():
+            BUT.setFixedHeight(30)
+            LAY_MAIN.addWidget(BUT)
+            BUT.clicked.connect(self.BUT_CLICK)
 
-        self.buttons['CAR'].setEnabled(False)
-        self.buttons['JOB'].setEnabled(False)
-        self.buttons['COL'].setEnabled(False)
-        self.buttons['INFO'].setEnabled(False)
-        self.buttons['VIEW'].setEnabled(False)
+        self.BUT['CAR'].setEnabled(False)
+        self.BUT['JOB'].setEnabled(False)
+        self.BUT['COL'].setEnabled(False)
+        self.BUT['INFO'].setEnabled(False)
+        self.BUT['VIEW'].setEnabled(False)
+        
+        self.setStyleSheet(Styles.LGHT)
 
         self.MGR = Manager(10, 1) # DEF : X = 10 , IN-STATE
-        self.career_tree = CTree()
-        self.college_info: List[Manager.College_Info] = []
+        self.CAREER_TREE = CTree()
+        self.COLLEGE_INFO: List[Manager.College_Info] = []
 
         self.initialize_app()
 
     def initialize_app(self):
-        self.str_time = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
+        self.STR_DT = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
         self.MGR.__init__(10, 1)
         self.MGR.SET('LOC', "United States of America")
-        self.print_message("""**Welcome to the** [**Career Tree!**](https://github.com/O-79/CareerTree-py/)""")
+        self.PRINT("""**Welcome to the** <a href='https://github.com/O-79/CareerTree-py/'><b>Career Tree!</b></a>""") # FIX
 
     ################################################################
 
-    def handle_button_click(self):
-        sender = self.sender()
-        command = sender.text().split()[0].lower()
+    def BUT_CLICK(self):
+        SDR = self.sender()
+        CMD = SDR.text().split()[0].lower()
 
-        if command == 'location':
-            self.cmd_loc()
-            self.buttons['CAR'].setEnabled(True)
-            self.buttons['JOB'].setEnabled(True)
-            self.buttons['COL'].setEnabled(True)
-            self.buttons['INFO'].setEnabled(True)
-            self.buttons['VIEW'].setEnabled(True)
-        elif command == 'career':
-            self.cmd_car()
-        elif command == 'job':
-            self.cmd_job()
-        elif command == 'college':
-            self.cmd_col()
-        elif command == 'info':
-            self.cmd_info()
-        elif command == 'view':
-            self.cmd_view()
-        elif command == 'ai':
-            self.cmd_ai()
-        elif command == 'export':
-            self.cmd_export()
-        elif command == 'quit':
-            self.cmd_quit()
-        elif command == 'colleges':
-            self.cmd_ins()
-        elif command == 'size':
-            self.cmd_size()
-        elif command == 'theme':
-            self.cmd_theme()
+        if CMD == 'location':
+            self.CMD_LOC()
+            self.BUT['CAR'].setEnabled(True)
+            self.BUT['JOB'].setEnabled(True)
+            self.BUT['COL'].setEnabled(True)
+            self.BUT['INFO'].setEnabled(True)
+            self.BUT['VIEW'].setEnabled(True)
+        elif CMD == 'career':
+            self.CMD_CAR()
+        elif CMD == 'job':
+            self.CMD_JOB()
+        elif CMD == 'college':
+            self.CMD_COL()
+        elif CMD == 'info':
+            self.CMD_INFO()
+        elif CMD == 'view':
+            self.CMD_VIEW()
+        elif CMD == 'ai':
+            self.CMD_AI()
+        elif CMD == 'export':
+            self.CMD_EXP()
+        elif CMD == 'quit':
+            self.CMD_QUIT()
+        elif CMD == 'colleges':
+            self.CMD_INS()
+        elif CMD == 'size':
+            self.CMD_SIZE()
+        elif CMD == 'theme':
+            self.CMD_THEME()
 
-    def cmd_loc(self):
+    def CMD_LOC(self):
         ok = False
         while not ok:
-            loc, ok = QInputDialog.getText(self, "Location", "Enter your current / desired location:")
+            LOC, ok = QInputDialog.getText(self, "Location", "Enter your current / desired location:")
         
-        if loc == '':
-            loc = "United States of America"
-        loc_add = loc[0].upper() + loc[1:]
-        self.MGR.SET('LOC', loc_add)
+        if LOC == '':
+            LOC = "United States of America"
+        LOC_ADD = LOC[0].upper() + LOC[1:]
+        self.MGR.SET('LOC', LOC_ADD)
 
-        car_add = self.parse_and_get_input("Choose a Career", "CAR")
-        job_add = self.parse_and_get_input("Choose a Job", "JOB")
-        col_add = self.parse_and_get_input("Choose a College", "COL")
+        CAR_ADD = self.PARSE("Choose a Career", "CAR")
+        JOB_ADD = self.PARSE("Choose a Job", "JOB")
+        COL_ADD = self.PARSE("Choose a College", "COL")
 
-        self.career_tree.ADD(0, loc_add, car_add, job_add, col_add)
-        self.career_tree.ADD(1, loc_add, car_add, job_add, col_add)
-        self.career_tree.ADD(2, loc_add, car_add, job_add, col_add)
+        self.CAREER_TREE.ADD(0, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
+        self.CAREER_TREE.ADD(1, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
+        self.CAREER_TREE.ADD(2, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
 
-        if self.career_tree.ADD(3, loc_add, car_add, job_add, col_add):
-            inf = self.MGR.GET_COL_INF_GPT()
-            if inf:
-                self.college_info = [inf]
-            self.print_message("""*Branch added.*""")
+        if self.CAREER_TREE.ADD(3, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD):
+            INF = self.MGR.GET_COL_INF_GPT()
+            if INF:
+                self.COLLEGE_INFO = [INF]
+            self.PRINT("""*Branch added.*""")
         else:
-            self.print_message("""*Branch selected.*""")
+            self.PRINT("""*Branch selected.*""")
 
-    def cmd_car(self):
-        car_add = self.parse_and_get_input("Choose a Career", "CAR")
-        job_add = self.parse_and_get_input("Choose a Job", "JOB")
-        col_add = self.parse_and_get_input("Choose a College", "COL")
+    def CMD_CAR(self):
+        CAR_ADD = self.PARSE("Choose a Career", "CAR")
+        JOB_ADD = self.PARSE("Choose a Job", "JOB")
+        COL_ADD = self.PARSE("Choose a College", "COL")
 
-        self.career_tree.ADD(1, self.MGR.GET('LOC'), car_add, job_add, col_add)
-        self.career_tree.ADD(2, self.MGR.GET('LOC'), car_add, job_add, col_add)
+        self.CAREER_TREE.ADD(1, self.MGR.GET('LOC'), CAR_ADD, JOB_ADD, COL_ADD)
+        self.CAREER_TREE.ADD(2, self.MGR.GET('LOC'), CAR_ADD, JOB_ADD, COL_ADD)
 
-        if self.career_tree.ADD(3, self.MGR.GET('LOC'), car_add, job_add, col_add):
-            inf = self.MGR.GET_COL_INF_GPT()
-            if inf:
-                self.college_info.append(inf)
-            self.print_message("""*Branch added.*""")
+        if self.CAREER_TREE.ADD(3, self.MGR.GET('LOC'), CAR_ADD, JOB_ADD, COL_ADD):
+            INF = self.MGR.GET_COL_INF_GPT()
+            if INF:
+                self.COLLEGE_INFO.append(INF)
+            self.PRINT("""*Branch added.*""")
         else:
-            self.print_message("""*Branch selected.*""")
+            self.PRINT("""*Branch selected.*""")
 
-    def cmd_job(self):
-        job_add = self.parse_and_get_input("Choose a Job", "JOB")
-        col_add = self.parse_and_get_input("Choose a College", "COL")
+    def CMD_JOB(self):
+        JOB_ADD = self.PARSE("Choose a Job", "JOB")
+        COL_ADD = self.PARSE("Choose a College", "COL")
 
-        self.career_tree.ADD(2, self.MGR.GET('LOC'), self.MGR.GET('CAR'), job_add, col_add)
+        self.CAREER_TREE.ADD(2, self.MGR.GET('LOC'), self.MGR.GET('CAR'), JOB_ADD, COL_ADD)
 
-        if self.career_tree.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), job_add, col_add):
-            inf = self.MGR.GET_COL_INF_GPT()
-            if inf:
-                self.college_info.append(inf)
-            self.print_message("""*Branch added.*""")
+        if self.CAREER_TREE.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), JOB_ADD, COL_ADD):
+            INF = self.MGR.GET_COL_INF_GPT()
+            if INF:
+                self.COLLEGE_INFO.append(INF)
+            self.PRINT("""*Branch added.*""")
         else:
-            self.print_message("""*Branch selected.*""")
+            self.PRINT("""*Branch selected.*""")
 
-    def cmd_col(self):
-        col_add = self.parse_and_get_input("Choose a College", "COL")
+    def CMD_COL(self):
+        COL_ADD = self.PARSE("Choose a College", "COL")
 
-        if self.career_tree.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), self.MGR.GET('JOB'), col_add):
-            inf = self.MGR.GET_COL_INF_GPT()
-            if inf:
-                self.college_info.append(inf)
-            self.print_message("""*Branch added.*""")
+        if self.CAREER_TREE.ADD(3, self.MGR.GET('LOC'), self.MGR.GET('CAR'), self.MGR.GET('JOB'), COL_ADD):
+            INF = self.MGR.GET_COL_INF_GPT()
+            if INF:
+                self.COLLEGE_INFO.append(INF)
+            self.PRINT("""*Branch added.*""")
         else:
-            self.print_message("""*Branch selected.*""")
+            self.PRINT("""*Branch selected.*""")
 
-    def cmd_info(self):
-        info = self.MGR.GET_COL_DSC_GPT()
-        self.print_message(f"""**College Information:**
-                               <br/>{info}""")
+    def CMD_INFO(self):
+        DESC = self.MGR.GET_COL_DSC_GPT()
+        self.PRINT(f"""**College Information:**
+                               <br/>{DESC}""")
 
-    def cmd_view(self):
-        tree_str = self.career_tree.STR()
+    def CMD_VIEW(self):
+        tree_str = self.CAREER_TREE.STR()
         college_report = self.get_college_report()
         dialog_view = self.TextDialog(f"""Career Tree:
                                           <br/>{tree_str}
@@ -232,34 +226,34 @@ class CareerTree(QMainWindow):
                                           <br/>{college_report}""")
         dialog_view.exec()
 
-    def cmd_ai(self):
-        question, ok = QInputDialog.getText(self, "AI Question", "Enter your question:")
+    def CMD_AI(self):
+        QST, ok = QInputDialog.getText(self, "AI Question", "Enter your question:")
         if ok:
-            if question == '':
-                self.print_message("""**Answer:**   Please ask a related question.""")
+            if QST == '':
+                self.PRINT("""**Answer:**   Please ask a related question.""")
             else:
-                answer = self.MGR.GET_EXT_GPT(question)
-                self.print_message(f"""**Question:** {question.capitalize() + '.'}
-                                       <br/>**Answer:**   {answer}""")
+                ANS = self.MGR.GET_EXT_GPT(QST)
+                self.PRINT(f"""**Question:** {QST.capitalize() + '.'}
+                                       <br/>**Answer:**   {ANS}""")
 
-    def cmd_export(self):
+    def CMD_EXP(self):
         if self.MGR.GET('CAR') is not None:
-            self.export_data()
+            self.EXPORT()
 
-    def cmd_quit(self):
+    def CMD_QUIT(self):
         QApplication.quit()
 
-    def cmd_ins(self):
-        ins_response = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
+    def CMD_INS(self):
+        INS_ANS = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
                                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        self.INS = 0 if ins_response == QMessageBox.StandardButton.Yes else 1
+        self.INS = 0 if INS_ANS == QMessageBox.StandardButton.Yes else 1
         self.MGR.SET_INS(self.INS)
 
-    def cmd_size(self):
+    def CMD_SIZE(self):
         self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
         self.MGR.SET_X(self.X)
 
-    def cmd_theme(self):
+    def CMD_THEME(self):
         global ALT_THEME
         if self.ALT_THEME == 0:
             self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt'))
@@ -272,35 +266,35 @@ class CareerTree(QMainWindow):
 
     ################################################################
 
-    def parse_and_get_input(self, prompt, typ):
-        options = self.MGR.GET_CAR_GPT() if typ == "CAR" else self.MGR.GET_JOB_GPT() if typ == "JOB" else self.MGR.GET_COL_GPT()
-        options = re.sub(r'[0-9]+', '', options).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
-        options = options.split('|')
+    def PARSE(self, QST, TYP):
+        OPT = self.MGR.GET_CAR_GPT() if TYP == "CAR" else self.MGR.GET_JOB_GPT() if TYP == "JOB" else self.MGR.GET_COL_GPT()
+        OPT = re.sub(r'[0-9]+', '', OPT).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
+        OPT = OPT.split('|')
         ok = False
         while not ok:
-            item, ok = QInputDialog.getItem(self, prompt, "Select an option:", options, 0, False)
+            XYZ, ok = QInputDialog.getItem(self, QST, "Select an option:", OPT, 0, False)
         if ok:
-            if typ == "CAR":
-                self.MGR.SET('CAR', item)
-            elif typ == "JOB":
-                self.MGR.SET('JOB', item)
+            if TYP == "CAR":
+                self.MGR.SET('CAR', XYZ)
+            elif TYP == "JOB":
+                self.MGR.SET('JOB', XYZ)
                 self.MGR.GET_PAY_GPT()
-            elif typ == "COL":
-                self.MGR.SET('COL', item)
+            elif TYP == "COL":
+                self.MGR.SET('COL', XYZ)
                 self.MGR.GET_DEG_GPT()
-            return item
+            return XYZ
         return None
 
-    def print_message(self, message):
-        self.output_text.setMarkdown(message)
-        self.output_text.moveCursor(QTextCursor.MoveOperation.End)
+    def PRINT(self, MSG):
+        self.TXT_MAIN.setMarkdown(MSG)
+        self.TXT_MAIN.moveCursor(QTextCursor.MoveOperation.End)
 
     def get_college_report(self):
-        if not self.college_info:
+        if not self.COLLEGE_INFO:
             return """No colleges"""
-        report = """─""" * 32 + """<br/>"""
-        for i in self.college_info:
-            report += (
+        STR = """─""" * 32 + """<br/>"""
+        for i in self.COLLEGE_INFO:
+            STR += (
                 f"""NAME:       {i.GET('COL')}<br/>"""
                 f"""LOCATION:   {i.GET('LOC')}<br/>"""
                 f"""DEGREE:     {i.GET('DEG')}<br/>"""
@@ -313,29 +307,29 @@ class CareerTree(QMainWindow):
                 f"""LOAN:       {i.GET('LON')} (avg.)<br/>"""
                 f"""REPAY IN:   {i.GET_MTH_PAY()} months (est.)<br/>"""
             )
-            report += """─""" * 32 + """<br/>"""
-        return report
+            STR += """─""" * 32 + """<br/>"""
+        return STR
 
-    def export_data(self):
+    def EXPORT(self):
         path = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
         if not os.path.exists(path):
             os.makedirs(path)
 
-        if not os.path.exists(os.path.join(path, self.str_time)):
-            os.makedirs(os.path.join(path, self.str_time))
+        if not os.path.exists(os.path.join(path, self.STR_DT)):
+            os.makedirs(os.path.join(path, self.STR_DT))
 
-        f_name_ctree = f"Tree_{self.str_time}.txt"
-        path_ctree = os.path.join(os.path.join(path, self.str_time), f_name_ctree)
-        with open(path_ctree, 'w', encoding="utf-8") as f:
-            f.write(f"{'─' * 32}\n{self.career_tree.STR().replace("<br/>", '\n')}\n{'─' * 32}")
+        f_name_ctree = f"Tree_{self.STR_DT}.txt"
+        PATH_CTREE = os.path.join(os.path.join(path, self.STR_DT), f_name_ctree)
+        with open(PATH_CTREE, 'w', encoding="utf-8") as f:
+            f.write(f"{'─' * 32}\n{self.CAREER_TREE.STR().replace("<br/>", '\n')}\n{'─' * 32}")
 
-        if self.college_info:
-            f_name_colrep = f"Report_{self.str_time}.txt"
-            path_colrep = os.path.join(os.path.join(path, self.str_time), f_name_colrep)
-            with open(path_colrep, 'w', encoding="utf-8") as f:
+        if self.COLLEGE_INFO:
+            f_name_colrep = f"Report_{self.STR_DT}.txt"
+            path_COLREP = os.path.join(os.path.join(path, self.STR_DT), f_name_colrep)
+            with open(path_COLREP, 'w', encoding="utf-8") as f:
                 f.write(self.get_college_report().replace("<br/>", '\n'))
 
-        self.print_message(f"""*Exported Career Tree & College Report to {path}*""")
+        self.PRINT(f"""*Exported Career Tree & College Report to {path}*""")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

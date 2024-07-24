@@ -93,21 +93,21 @@ class CTree:
         return False
 
     def STR(self):
-        s = []
-        s.append(f"""LOC {self.ROT.GET()}""")
+        STR = []
+        STR.append(f"""LOC {self.ROT.GET()}""")
         for A in self.ROT.GET_ARR():
             if A == self.ROT.GET_ARR()[-1]:
-                s.append(f""" └── CAR {A.GET()}""")
+                STR.append(f""" └── CAR {A.GET()}""")
             else:
-                s.append(f""" ├── CAR {A.GET()}""")
+                STR.append(f""" ├── CAR {A.GET()}""")
             for B in A.GET_ARR():
                 if B == A.GET_ARR()[-1]:
-                    s.append(f"""      └── JOB {B.GET()}""")
+                    STR.append(f"""      └── JOB {B.GET()}""")
                 else:
-                    s.append(f"""      ├── JOB {B.GET()}""")
+                    STR.append(f"""      ├── JOB {B.GET()}""")
                 for C in B.GET_ARR():
                     if C == B.GET_ARR()[-1]:
-                        s.append(f"""           └── COL {C.GET()}""")
+                        STR.append(f"""           └── COL {C.GET()}""")
                     else:
-                        s.append(f"""           ├── COL {C.GET()}""")
-        return """<br/>""".join(s)
+                        STR.append(f"""           ├── COL {C.GET()}""")
+        return """<br/>""".join(STR)
