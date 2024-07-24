@@ -3,19 +3,16 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# testing
-test-*.py
+# Testing
+test*.py
 
 # Color palette
-palette.*
+palette*.*
 
 # Program output files
 output/
 
-# PyInquirer extra files
-examples/
-
-# API key
+# Secrets
 key.txt
 
 # Visual Studio
