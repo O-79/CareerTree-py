@@ -18,7 +18,7 @@ class CareerTree(QMainWindow):
             super().__init__(parent)
             self.setWindowTitle("Career Tree & College Report")
             self.setGeometry(100, 100, 600, 400)
-            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
+            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_dark'))
 
             layout = QVBoxLayout(self)
 
@@ -57,7 +57,7 @@ class CareerTree(QMainWindow):
         
         self.BUT_TOP['QUIT'].setFixedSize(55, 30)
         self.BUT_TOP['EXP'].setFixedSize(70, 30)
-        #
+        # SPACER
         self.BUT_TOP['INS'].setFixedSize(90, 30)
         self.BUT_TOP['SIZE'].setFixedSize(55, 30)
         self.BUT_TOP['THEME'].setFixedSize(65, 30)
