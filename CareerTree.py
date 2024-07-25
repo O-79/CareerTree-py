@@ -259,8 +259,10 @@ class CareerTree(QMainWindow):
         self.BUT_TOP['INS'].setFixedSize(BUT_WID, 30)
 
     def CMD_SIZE(self):
-        self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 32 (Slower)]", 10, 4, 32)
-        self.MGR.SET_X(self.X)
+        X_INP, ok = QInputDialog.getInt(self, "List size", f"Size of list responses from AI? Current: {self.X}", 10, 4, 32)
+        if ok:
+            self.X = X_INP
+            self.MGR.SET_X(self.X)
 
     def CMD_THEME(self):
         global ALT_THEME
