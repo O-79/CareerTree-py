@@ -109,7 +109,8 @@ class CareerTree(QMainWindow):
         self.INS = 1
         self.MGR.__init__(self.X, self.INS)
         self.MGR.SET('LOC', "United States of America")
-        self.PRINT("""**Welcome to the** <a href='https://github.com/O-79/CareerTree-py/'><b>Career Tree!</b></a>""") # FIX
+        self.PRINT("""**Welcome to the Career Tree!**""")
+        # self.PRINT("""**Welcome to the** <a href='https://github.com/O-79/CareerTree-py/'><b>Career Tree!</b></a>""") # FIX
 
     ################################################################
 
@@ -221,17 +222,13 @@ class CareerTree(QMainWindow):
 
     def CMD_INFO(self):
         DESC = self.MGR.GET_COL_DSC_GPT()
-        self.PRINT(f"""**College Information:**
-                               <br/>{DESC}""")
+        self.PRINT(f"""**College Information:**<br/>{DESC}""")
 
     def CMD_VIEW(self):
-        tree_str = self.CAREER_TREE.STR()
-        college_report = self.get_college_report()
-        dialog_view = self.TextDialog(f"""Career Tree:
-                                          <br/>{tree_str}
-                                          <br/><br/>College Report:
-                                          <br/>{college_report}""")
-        dialog_view.exec()
+        CAREER_TREE_STR = """─""" * 32 + """<br/>""" + self.CAREER_TREE.STR() + """<br/>""" + """─""" * 32;
+        COLLEGE_REPORT_STR = self.GET_COLLEGE_REPORT()
+        BOX_VIEW = self.TextDialog(f"""Career Tree:<br/>{CAREER_TREE_STR}<br/><br/>College Report:<br/>{COLLEGE_REPORT_STR}""")
+        BOX_VIEW.exec()
 
     def CMD_AI(self):
         QST, ok = QInputDialog.getText(self, "AI Question", "Enter your question:")
@@ -240,8 +237,7 @@ class CareerTree(QMainWindow):
                 self.PRINT("""**Answer:**   Please ask a related question.""")
             else:
                 ANS = self.MGR.GET_EXT_GPT(QST)
-                self.PRINT(f"""**Question:** {QST.capitalize() + '.'}
-                                       <br/>**Answer:**   {ANS}""")
+                self.PRINT(f"""**Question:** {QST.capitalize() + '.'}<br/>**Answer:**   {ANS}""")
 
     def CMD_QUIT(self):
         QApplication.quit()
@@ -270,6 +266,10 @@ class CareerTree(QMainWindow):
             self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt'))
             self.setStyleSheet(Styles.DARK)
             self.ALT_THEME = 1
+        elif self.ALT_THEME == 1:
+            self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_dark'))
+            self.setStyleSheet(Styles.NGHT)
+            self.ALT_THEME = 2
         else:
             self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow'))
             self.setStyleSheet(Styles.LGHT)
@@ -300,7 +300,7 @@ class CareerTree(QMainWindow):
         self.TXT_MAIN.setMarkdown(MSG)
         self.TXT_MAIN.moveCursor(QTextCursor.MoveOperation.End)
 
-    def get_college_report(self):
+    def GET_COLLEGE_REPORT(self):
         if not self.COLLEGE_INFO:
             return """No colleges"""
         STR = """─""" * 32 + """<br/>"""
@@ -338,7 +338,7 @@ class CareerTree(QMainWindow):
             F_COLLEGE_REPORT_STR = f"Report_{self.STR_DT}.txt"
             PATH_COLLEGE_REPORT = os.path.join(os.path.join(PATH, self.STR_DT), F_COLLEGE_REPORT_STR)
             with open(PATH_COLLEGE_REPORT, 'w', encoding="utf-8") as f:
-                f.write(self.get_college_report().replace("<br/>", '\n'))
+                f.write(self.GET_COLLEGE_REPORT().replace("<br/>", '\n'))
 
         self.PRINT(f"""*Exported Career Tree & College Report to {PATH}*""")
 
