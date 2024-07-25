@@ -50,7 +50,7 @@ class CareerTree(QMainWindow):
         self.BUT_TOP = {
             'QUIT': QPushButton('Quit'),
             'EXP': QPushButton('Export'),
-            'INS': QPushButton('Colleges'),
+            'INS': QPushButton('In-State'),
             'SIZE': QPushButton('Size'),
             'THEME': QPushButton('Theme'),
         }
@@ -58,7 +58,7 @@ class CareerTree(QMainWindow):
         self.BUT_TOP['QUIT'].setFixedSize(55, 30)
         self.BUT_TOP['EXP'].setFixedSize(70, 30)
         # SPACER
-        self.BUT_TOP['INS'].setFixedSize(90, 30)
+        self.BUT_TOP['INS'].setFixedSize(85, 30)
         self.BUT_TOP['SIZE'].setFixedSize(55, 30)
         self.BUT_TOP['THEME'].setFixedSize(65, 30)
         
@@ -105,7 +105,9 @@ class CareerTree(QMainWindow):
 
     def initialize_app(self):
         self.STR_DT = datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
-        self.MGR.__init__(10, 1)
+        self.X = 10
+        self.INS = 1
+        self.MGR.__init__(self.X, self.INS)
         self.MGR.SET('LOC', "United States of America")
         self.PRINT("""**Welcome to the** <a href='https://github.com/O-79/CareerTree-py/'><b>Career Tree!</b></a>""") # FIX
 
@@ -139,11 +141,11 @@ class CareerTree(QMainWindow):
             self.CMD_VIEW()
         elif CMD == 'ai':
             self.CMD_AI()
-        elif CMD == 'export':
-            self.CMD_EXP()
         elif CMD == 'quit':
             self.CMD_QUIT()
-        elif CMD == 'colleges':
+        elif CMD == 'export':
+            self.CMD_EXP()
+        elif CMD == 'in-state':
             self.CMD_INS()
         elif CMD == 'size':
             self.CMD_SIZE()
@@ -241,21 +243,23 @@ class CareerTree(QMainWindow):
                 self.PRINT(f"""**Question:** {QST.capitalize() + '.'}
                                        <br/>**Answer:**   {ANS}""")
 
+    def CMD_QUIT(self):
+        QApplication.quit()
+
     def CMD_EXP(self):
         if self.MGR.GET('CAR') is not None:
             self.EXPORT()
 
-    def CMD_QUIT(self):
-        QApplication.quit()
-
     def CMD_INS(self):
-        INS_ANS = QMessageBox.question(self, "In-State / Out-of-State", "Include out-of-state colleges?",
-                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        self.INS = 0 if INS_ANS == QMessageBox.StandardButton.Yes else 1
+        self.INS = -1 * (self.INS - 1)
         self.MGR.SET_INS(self.INS)
+        INS_STR = "In-state" if self.INS == 1 else "In-state and Out-of-state"
+        BUT_WID = 85 if self.INS == 1 else 215
+        self.BUT_TOP['INS'].setText(INS_STR)
+        self.BUT_TOP['INS'].setFixedSize(BUT_WID, 30)
 
     def CMD_SIZE(self):
-        self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 16 (Slower)]", 10, 4, 16)
+        self.X = QInputDialog.getInt(self, "List size", "Size of list responses from AI? [4 (Faster) - 32 (Slower)]", 10, 4, 32)
         self.MGR.SET_X(self.X)
 
     def CMD_THEME(self):
@@ -316,25 +320,25 @@ class CareerTree(QMainWindow):
         return STR
 
     def EXPORT(self):
-        path = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
-        if not os.path.exists(path):
-            os.makedirs(path)
+        PATH = os.path.join(os.path.normpath(os.path.expanduser("~/Desktop")), "output")
+        if not os.path.exists(PATH):
+            os.makedirs(PATH)
 
-        if not os.path.exists(os.path.join(path, self.STR_DT)):
-            os.makedirs(os.path.join(path, self.STR_DT))
+        if not os.path.exists(os.path.join(PATH, self.STR_DT)):
+            os.makedirs(os.path.join(PATH, self.STR_DT))
 
-        f_name_ctree = f"Tree_{self.STR_DT}.txt"
-        PATH_CTREE = os.path.join(os.path.join(path, self.STR_DT), f_name_ctree)
-        with open(PATH_CTREE, 'w', encoding="utf-8") as f:
+        F_CAREER_TREE_STR = f"Tree_{self.STR_DT}.txt"
+        PATH_CAREER_TREE = os.path.join(os.path.join(PATH, self.STR_DT), F_CAREER_TREE_STR)
+        with open(PATH_CAREER_TREE, 'w', encoding="utf-8") as f:
             f.write(f"{'─' * 32}\n{self.CAREER_TREE.STR().replace("<br/>", '\n')}\n{'─' * 32}")
 
         if self.COLLEGE_INFO:
-            f_name_colrep = f"Report_{self.STR_DT}.txt"
-            path_COLREP = os.path.join(os.path.join(path, self.STR_DT), f_name_colrep)
-            with open(path_COLREP, 'w', encoding="utf-8") as f:
+            F_COLLEGE_REPORT_STR = f"Report_{self.STR_DT}.txt"
+            PATH_COLLEGE_REPORT = os.path.join(os.path.join(PATH, self.STR_DT), F_COLLEGE_REPORT_STR)
+            with open(PATH_COLLEGE_REPORT, 'w', encoding="utf-8") as f:
                 f.write(self.get_college_report().replace("<br/>", '\n'))
 
-        self.PRINT(f"""*Exported Career Tree & College Report to {path}*""")
+        self.PRINT(f"""*Exported Career Tree & College Report to {PATH}*""")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
