@@ -11,10 +11,29 @@ from datetime import datetime
 from Styles import Styles
 
 class CareerTree(QMainWindow):
-    ALT_THEME = 0;
-    
+
+    class DynamicButton(QPushButton):
+        def __init__(self, TXT_1: str, TXT_2: str, parent=None):
+            super().__init__(parent)
+            self.setMouseTracking(True)
+            self.setText(TXT_1)
+            self.installEventFilter(self)
+            self.TXT_1 = TXT_1
+            self.TXT_2 = TXT_2
+            # self.is_pressed = False
+
+        def eventFilter(self, obj, event):
+            if obj is self:
+                if event.type() == QEvent.Type.Enter:
+                    self.setFixedSize(8 * len(self.TXT_2) + 24, 30)
+                    self.setText(self.TXT_2)
+                elif event.type() == QEvent.Type.Leave:
+                    self.setFixedSize(8 * len(self.TXT_1) + 24, 30)
+                    self.setText(self.TXT_1)
+            return super().eventFilter(obj, event)
+
     class TextDialog(QDialog):
-        def __init__(self, text, parent = None):
+        def __init__(self, TXT: str, parent=None):
             super().__init__(parent)
             self.setWindowTitle("Career Tree & College Report")
             self.setGeometry(100, 100, 600, 400)
@@ -24,7 +43,7 @@ class CareerTree(QMainWindow):
 
             self.TXT_MAIN = QTextEdit()
             self.TXT_MAIN.setReadOnly(True)
-            self.TXT_MAIN.setMarkdown(text)
+            self.TXT_MAIN.setMarkdown(TXT)
             layout.addWidget(self.TXT_MAIN)
 
             BUT_OK = QPushButton("OK")
@@ -49,18 +68,18 @@ class CareerTree(QMainWindow):
         
         self.BUT_TOP = {
             'QUIT': QPushButton('Quit'),
-            'EXP': QPushButton('Export'),
+            'EXP': self.DynamicButton('Export', 'Export Tree, Report, and Summary!'),
             'INS': QPushButton('In-State'),
             'SIZE': QPushButton('Size'),
             'THEME': QPushButton('Theme'),
         }
         
-        self.BUT_TOP['QUIT'].setFixedSize(55, 30)
-        self.BUT_TOP['EXP'].setFixedSize(70, 30)
+        self.BUT_TOP['QUIT'].setFixedSize(8 * len(self.BUT_TOP['QUIT'].text()) + 24, 30)
+        self.BUT_TOP['EXP'].setFixedSize(8 * len(self.BUT_TOP['EXP'].text()) + 24, 30)
         # SPACER
-        self.BUT_TOP['INS'].setFixedSize(85, 30)
-        self.BUT_TOP['SIZE'].setFixedSize(55, 30)
-        self.BUT_TOP['THEME'].setFixedSize(65, 30)
+        self.BUT_TOP['INS'].setFixedSize(8 * len(self.BUT_TOP['INS'].text()) + 24, 30)
+        self.BUT_TOP['SIZE'].setFixedSize(8 * len(self.BUT_TOP['SIZE'].text()) + 24, 30)
+        self.BUT_TOP['THEME'].setFixedSize(8 * len(self.BUT_TOP['THEME'].text()) + 24, 30)
         
         for i, BUT_TOP in enumerate(self.BUT_TOP.values()):
             if i == 2:
@@ -94,7 +113,8 @@ class CareerTree(QMainWindow):
         self.BUT['COL'].setEnabled(False)
         self.BUT['INFO'].setEnabled(False)
         self.BUT['VIEW'].setEnabled(False)
-        
+
+        self.ALT_THEME = 0
         self.setStyleSheet(Styles.LGHT)
 
         self.MGR = Manager(10, 1) # DEF : X = 10 , IN-STATE
@@ -158,7 +178,7 @@ class CareerTree(QMainWindow):
         if ok:
             if LOC == '':
                 LOC = "United States of America"
-            LOC_ADD = LOC[0].upper() + LOC[1:]
+            LOC_ADD = ' '.join([W.title() if W.islower() else W for W in LOC.split()])
             self.MGR.SET('LOC', LOC_ADD)
 
             CAR_ADD = self.PARSE("Choose a Career", "CAR")
@@ -250,9 +270,8 @@ class CareerTree(QMainWindow):
         self.INS = -1 * (self.INS - 1)
         self.MGR.SET_INS(self.INS)
         INS_STR = "In-state" if self.INS == 1 else "In-state and Out-of-state"
-        BUT_WID = 85 if self.INS == 1 else 215
         self.BUT_TOP['INS'].setText(INS_STR)
-        self.BUT_TOP['INS'].setFixedSize(BUT_WID, 30)
+        self.BUT_TOP['INS'].setFixedSize(8 * len(self.BUT_TOP['INS'].text()) + 30, 30)
 
     def CMD_SIZE(self):
         X_INP, ok = QInputDialog.getInt(self, "List size", f"Size of list responses from AI? Current: {self.X}", 10, 4, 32)
@@ -261,7 +280,6 @@ class CareerTree(QMainWindow):
             self.MGR.SET_X(self.X)
 
     def CMD_THEME(self):
-        global ALT_THEME
         if self.ALT_THEME == 0:
             self.setWindowIcon(QIcon('resources/icon_full_borderless_shadow_alt'))
             self.setStyleSheet(Styles.DARK)
@@ -331,16 +349,23 @@ class CareerTree(QMainWindow):
 
         F_CAREER_TREE_STR = f"Tree_{self.STR_DT}.txt"
         PATH_CAREER_TREE = os.path.join(os.path.join(PATH, self.STR_DT), F_CAREER_TREE_STR)
-        with open(PATH_CAREER_TREE, 'w', encoding="utf-8") as f:
-            f.write(f"{'─' * 32}\n{self.CAREER_TREE.STR().replace("<br/>", '\n')}\n{'─' * 32}")
+        with open(PATH_CAREER_TREE, 'w', encoding="utf-8") as F:
+            F.write(f"{'─' * 32}\n{self.CAREER_TREE.STR().replace("<br/>", '\n')}\n{'─' * 32}")
 
         if self.COLLEGE_INFO:
             F_COLLEGE_REPORT_STR = f"Report_{self.STR_DT}.txt"
             PATH_COLLEGE_REPORT = os.path.join(os.path.join(PATH, self.STR_DT), F_COLLEGE_REPORT_STR)
-            with open(PATH_COLLEGE_REPORT, 'w', encoding="utf-8") as f:
-                f.write(self.GET_COLLEGE_REPORT().replace("<br/>", '\n'))
+            with open(PATH_COLLEGE_REPORT, 'w', encoding="utf-8") as F:
+                F.write(self.GET_COLLEGE_REPORT().replace("<br/>", '\n'))
 
-        self.PRINT(f"""*Exported Career Tree & College Report to {PATH}*""")
+        F_CAREER_SUMMARY_STR = f"Summary_{self.STR_DT}.txt"
+        PATH_CAREER_SUMMARY = os.path.join(os.path.join(PATH, self.STR_DT), F_CAREER_SUMMARY_STR)
+        with open(PATH_CAREER_SUMMARY, 'w', encoding="utf-8") as F:
+            SUMMARY = self.MGR.GET_SUM_GPT(self.CAREER_TREE)
+            F.write(SUMMARY)
+            self.PRINT(SUMMARY + f"""<br/><br/>*Exported Career Tree, College Report, and Summary to {PATH}*""")
+
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

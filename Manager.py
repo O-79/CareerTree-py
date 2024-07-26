@@ -18,10 +18,10 @@ class College_Info:
             'LON_OPP': None
         }
 
-    def GET(self, KEY):
+    def GET(self, KEY: str):
         return self.INF.get(KEY)
 
-    def SET(self, KEY, VAL):
+    def SET(self, KEY: str, VAL: str):
         self.INF[KEY] = VAL
 
     def GET_MTH_PAY(self):
@@ -30,7 +30,7 @@ class College_Info:
         return 'N/A'
 
 class Manager:
-    def __init__(self, X, INS):
+    def __init__(self, X: int, INS: int):
         self.X = X
         self.INS = INS
         self.CUR = {
@@ -44,16 +44,16 @@ class Manager:
             'PAY': None
         }
 
-    def SET_X(self, X):
+    def SET_X(self, X: int):
         self.X = X
 
-    def SET_INS(self, INS):
+    def SET_INS(self, INS: int):
         self.INS = INS
 
-    def GET(self, KEY):
+    def GET(self, KEY: str):
         return self.CUR.get(KEY)
 
-    def SET(self, KEY, VAL):
+    def SET(self, KEY: str, VAL: str):
         self.CUR[KEY] = VAL
 
     def GET_CAR_GPT(self):
@@ -67,7 +67,7 @@ class Manager:
     def GET_COL_GPT(self):
         ADD = ""
         if self.INS == 1:
-            ADD = " within " + self.CUR['LOC']
+            ADD = " within or close to " + self.CUR['LOC']
         self.CUR['COL'] = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: list {self.X} colleges (no acronyms) for a {self.CUR['JOB']} job{ADD} AS A '|' SEPARATED LIST, NO REPEATS")
         return self.CUR['COL']
 
@@ -84,8 +84,11 @@ class Manager:
     def GET_COL_DSC_GPT(self):
         return GPT.GET_ANS(f"tell me more about {self.CUR['COL']}")
     
-    def GET_EXT_GPT(self, Q):
-        return GPT.GET_ANS_X("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7)
+    def GET_EXT_GPT(self, Q: str):
+        return GPT.GET_ANS_TEMP_TOPP("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7, 0.7)
+
+    def GET_SUM_GPT(self, CAREER_TREE):
+        return GPT.GET_ANS_TEMP_TOPP_SYS(f"give a detailed summary and career recommendations from the following career tree: \n{CAREER_TREE.STR()}", 0.7, 0.7, "USE MARKDOWN (.MD) FORMATTING, FEEL FREE TO USE HEADERS, BOLDING, ITALICS, LISTS, ETC. AS NEEDED")
 
     def GET_COL_INF_GPT(self):
         INF = College_Info()
