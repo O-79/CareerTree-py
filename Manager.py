@@ -88,7 +88,8 @@ class Manager:
         return GPT.GET_ANS_TEMP_TOPP("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7, 0.7)
 
     def GET_SUM_GPT(self, CAREER_TREE):
-        return GPT.GET_ANS_TEMP_TOPP_SYS(f"give a detailed summary and career recommendations from the following career tree: \n{CAREER_TREE.STR()}", 0.7, 0.7, "USE MARKDOWN (.MD) FORMATTING, FEEL FREE TO USE HEADERS, BOLDING, ITALICS, LISTS, ETC. AS NEEDED")
+        print(CAREER_TREE.STR().replace("CAR", "Career: ").replace("LOC", "Location: ").replace("JOB", "Job: ").replace("COL", "College: "))
+        return GPT.GET_ANS_TEMP_TOPP_SYS(f"give a detailed summary and career recommendations from the following career tree: \n{CAREER_TREE.STR().replace("CAR", "Career: ").replace("JOB", "Job: ").replace("COL", "College: ")}", 0.7, 0.7, "USE MARKDOWN (.MD) FORMATTING, FEEL FREE TO USE HEADERS, BOLDING, ITALICS, LISTS, ETC. AS NEEDED")
 
     def GET_COL_INF_GPT(self):
         INF = College_Info()

@@ -2,12 +2,12 @@ import sys
 import os
 import re
 from typing import List
+from datetime import datetime
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from CTree import CTree
 from Manager import Manager
-from datetime import datetime
 from Styles import Styles
 
 class CareerTree(QMainWindow):
@@ -20,7 +20,6 @@ class CareerTree(QMainWindow):
             self.installEventFilter(self)
             self.TXT_1 = TXT_1
             self.TXT_2 = TXT_2
-            # self.is_pressed = False
 
         def eventFilter(self, obj, event):
             if obj is self:
@@ -94,11 +93,11 @@ class CareerTree(QMainWindow):
         LAY_MAIN.addWidget(self.TXT_MAIN)
 
         self.BUT = {
-            'LOC': QPushButton('Location (add and reset tree)'),
-            'CAR': QPushButton('Career (add / select existing)'),
-            'JOB': QPushButton('Job (add / select existing)'),
-            'COL': QPushButton('College (add / select existing)'),
-            'INFO': QPushButton('Info (current college description)'),
+            'LOC': QPushButton('Location (add career + job + college, RESETS TREE)'),
+            'CAR': QPushButton('Career (add career + job + college)'),
+            'JOB': QPushButton('Job (add job + college to selected career)'),
+            'COL': QPushButton('College (add college to selected job)'),
+            'INFO': QPushButton('Info (description of selected college)'),
             'VIEW': QPushButton('View (Career Tree and College Report)'),
             'AI': QPushButton('AI (custom question)'),
         }
