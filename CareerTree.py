@@ -364,8 +364,6 @@ class CareerTree(QMainWindow):
             F.write(SUMMARY)
             self.PRINT(SUMMARY + f"""<br/><br/>*Exported Career Tree, College Report, and Summary to {PATH}*""")
 
-        
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = CareerTree()
