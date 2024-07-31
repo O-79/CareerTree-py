@@ -1,6 +1,10 @@
 # Career Tree
 ![Career Tree](https://github.com/O-79/CareerTree-py/blob/master/resources/icon_base_black.png?raw=true)<em> Document Author: Adi</em>
 
+<h3>Requirements:</h3>
+<code>pip install openai
+pip install PyQt6</code>
+
 <h3>Run in GUI</h3>
 <code>python CareerTree.py</code>
 
