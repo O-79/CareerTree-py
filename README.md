@@ -8,9 +8,6 @@
 <h3>Run in GUI</h3>
 <code>python CareerTree.py</code>
 
-<h3>Run in CLI</h3>
-<code>python Control.py</code>
-
 <h3>What Is It?</h3>
 
 Career Tree is a tool primarily made for high school students / graduates which creates *a tree to map potential career paths* starting from the single root, the desired location.
