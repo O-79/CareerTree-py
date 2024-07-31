@@ -2,13 +2,15 @@ import os
 from openai import OpenAI
 
 class GPT:
+    MODEL = "gpt-4o-mini"
+    
     @staticmethod
     def GET_ANS(MSG):
         OpenAI.api_key = os.getenv("OPENAI_API_KEY")
         client = OpenAI()
         
         completion = client.chat.completions.create(
-            model = "gpt-3.5-turbo",
+            model = GPT.MODEL,
             temperature = 0.1,
             top_p = 0.1,
             messages = [
@@ -24,7 +26,7 @@ class GPT:
         client = OpenAI()
         
         completion = client.chat.completions.create(
-            model = "gpt-3.5-turbo",
+            model = GPT.MODEL,
             temperature = TEMP,
             top_p = TOPP,
             messages = [
@@ -40,7 +42,7 @@ class GPT:
         client = OpenAI()
         
         completion = client.chat.completions.create(
-            model = "gpt-3.5-turbo",
+            model = GPT.MODEL,
             temperature = TEMP,
             top_p = TOPP,
             messages = [
