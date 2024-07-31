@@ -93,13 +93,13 @@ class CareerTree(QMainWindow):
         LAY_MAIN.addWidget(self.TXT_MAIN)
 
         self.BUT = {
-            'LOC': QPushButton('Location -> Career -> Job -> College | START HERE!'),
-            'CAR': QPushButton('            Career -> Job -> College'),
-            'JOB': QPushButton('                      Job -> College'),
-            'COL': QPushButton('                             College'),
-            'INFO': QPushButton('                                Info | Description of Selected College'),
-            'VIEW': QPushButton('                                View | Full Career Tree and College Report'),
-            'AI': QPushButton('                                  AI | Custom Question'),
+            'LOC': QPushButton('        Location -> Career -> Job -> College | START HERE!'),
+            'CAR': QPushButton('                    Career -> Job -> College | '),
+            'JOB': QPushButton('                              Job -> College | '),
+            'COL': QPushButton('                                     College | '),
+            'INFO': QPushButton('                                        Info | Description of Selected College'),
+            'VIEW': QPushButton('                                        View | Full Career Tree and College Report'),
+            'AI': QPushButton('                                          AI | Custom Question'),
         }
 
         for BUT in self.BUT.values():
@@ -150,10 +150,10 @@ class CareerTree(QMainWindow):
                 self.BUT['COL'].setEnabled(True)
                 self.BUT['INFO'].setEnabled(True)
                 self.BUT['VIEW'].setEnabled(True)
-                self.BUT['LOC'].setText('Location -> Career -> Job -> College | RESET TREE!')
-                self.BUT['CAR'].setText(f'            Career -> Job -> College | Explore a career in {self.MGR.GET('LOC')}')
-                self.BUT['JOB'].setText(f'                      Job -> College | Explore a job in the {self.MGR.GET('CAR')} career')
-                self.BUT['COL'].setText(f'                             College | Explore a college for a {self.MGR.GET('JOB')} job')
+                self.BUT['LOC'].setText('        Location -> Career -> Job -> College | RESET TREE!')
+                self.BUT['CAR'].setText(f'                    Career -> Job -> College | Explore a career in {self.MGR.GET('LOC')}')
+                self.BUT['JOB'].setText(f'                              Job -> College | Explore a job in the {self.MGR.GET('CAR')} career')
+                self.BUT['COL'].setText(f'                                     College | Explore a college for a {self.MGR.GET('JOB')} job')
         elif CMD == 'career':
             self.CMD_CAR()
         elif CMD == 'job':

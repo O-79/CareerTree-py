@@ -91,13 +91,11 @@ class Manager:
         return GPT.GET_ANS_TEMP_TOPP("only answer the following question if it relates to career path guidance, types of careers or information about specific careers, types of jobs or information about specific jobs, types of colleges / universities or information about specific colleges / universities, or other on-topic subjects, ELSE RESPOND WITH 'Please ask a related question.'; QUESTION: " + Q, 0.7, 0.7)
 
     def GET_SUM_GPT(self, CAREER_TREE):
-        print(CAREER_TREE.STR().replace("CAR", "Career: ").replace("LOC", "Location: ").replace("JOB", "Job: ").replace("COL", "College: "))
-        return GPT.GET_ANS_TEMP_TOPP_SYS(f"give a detailed summary and career recommendations from the following career tree: \n{CAREER_TREE.STR().replace("CAR", "Career: ").replace("JOB", "Job: ").replace("COL", "College: ")}", 0.7, 0.7, "USE MARKDOWN (.MD) FORMATTING, FEEL FREE TO USE HEADERS, BOLDING, ITALICS, LISTS, ETC. AS NEEDED")
+        return GPT.GET_ANS_TEMP_TOPP_SYS(f"give a detailed summary and career recommendations from the following career tree: \n```{CAREER_TREE.STR().replace("CAR", "Career: ").replace("JOB", "Job: ").replace("COL", "College: ")}```", 0.7, 0.7, "USE MARKDOWN (.MD) FORMATTING, FEEL FREE TO USE HEADERS, BOLDING, ITALICS, LISTS, ETC. AS NEEDED")
 
     def GET_COL_INF_GPT(self):
         INF = College_Info()
         
-        INF.SET('LOC', self.CUR['LOC'])
         INF.SET('CAR', self.CUR['CAR'])
         INF.SET('JOB', self.CUR['JOB'])
         INF.SET('COL', self.CUR['COL'])
@@ -105,7 +103,9 @@ class Manager:
         INF.SET('PAY_LOW', self.CUR['PAY_LOW'])
         INF.SET('PAY_UPP', self.CUR['PAY_UPP'])       
         
-        REQ = GPT.GET_ANS(f"NO EXTRA DESCRIPTION, state the required unweighted GPA (must be between 0.0 - 4.0), SAT, and ACT scores needed for {self.CUR['COL']} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
+        INF.SET('LOC', GPT.GET_ANS(f"where is {self.CUR['COL']}? RESPOND IN THE FORMAT (State is optional): City, State, Country"))
+        
+        REQ = GPT.GET_ANS(f"NO EXTRA DESCRIPTION: state the required unweighted GPA (must be between 0.0 - 4.0), SAT, and ACT scores needed for {self.CUR['COL']} IN THE FORMAT: 'GPA: #, SAT: #, ACT: #'")
         INF.SET('REQ', REQ)
 
         INS = GPT.GET_ANS(f"ANSWER WITH ONLY 1 LETTER (Y/N): is {self.CUR['COL']} within the same state as {self.CUR['LOC']}").lower() == 'y'
