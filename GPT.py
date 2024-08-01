@@ -2,7 +2,7 @@ import os
 from openai import OpenAI
 
 class GPT:
-    MODEL = "gpt-4o-mini"
+    MODEL = "gpt-3.5-turbo"
     
     @staticmethod
     def GET_ANS(MSG):
